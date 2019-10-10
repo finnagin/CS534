@@ -1,8 +1,7 @@
 # Implementation 1
 
-Has not been given out yet...
+Use python 3.6.8
 
-Test edit #2
-
-Test edit #4
+1) install modules in requirements.txt
+2) ...
 
