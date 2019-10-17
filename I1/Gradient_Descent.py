@@ -13,7 +13,7 @@ import numpy as np
 
 class Gradient_Descent:
     
-    def run_gradient_descent(target_training_vector, training_features_matrix, starting_weights, learning_rate, regularization_constant, gradient_norm_stopping_criteria, max_iterations):
+    def run_gradient_descent(self,target_training_vector, training_features_matrix, starting_weights, learning_rate, regularization_constant, gradient_norm_stopping_criteria, max_iterations):
         
         number_of_training_examples = target_training_vector.size
         number_of_features = starting_weights.size
