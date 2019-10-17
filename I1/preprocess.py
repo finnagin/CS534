@@ -3,28 +3,41 @@ import csv
 from collections import Counter
 
 def read_file(file):
+    """
+    :param file: a string containing the file path to the csv you wish to load
+    :return: a dict containg the columns of the csv with the headers as the key
+    """
     with open(file) as fid:
             data={}
             csv_reader = csv.reader(fid)
             first = True
             for row in csv_reader:
+                # check if the first row (header row)
                 if first:
                     feature_keys = row
                     first = False
+                    # initialize column list
                     for key in feature_keys:
                         data[key] = []
                 else:
+                    # append each element to the corresponding column key
                     for idx in range(len(feature_keys)):
                         data[feature_keys[idx]].append(row[idx])
     return data
 
 def print_stats(data):
+    """
+    :param data: a dict containing the data loaded from the csv that has been processed to contain float values
+    :return: Stastics about each feature printed to the terminal
+    """
     for k, v in data.items():
         print(k, ":")
+        # check if categorical
         if k in ['condition', 'grade', 'waterfront']:
             counts = Counter(v).most_common()
             for ck, cv in counts:
                 if str(ck).endswith(".0"):
+                    # since these values are floats this removes the trailing .0 for integer values
                     print("  ", str(ck).replace(".0",""), ": ", cv)
                 else:
                     print("  ", ck, ": ", cv)
@@ -80,7 +93,7 @@ class preprocess():
                 max_val = norm[k]
             data[k] = [x/max_val for x in v]
         self.data_norm = data.copy()
-        if test:
+        if not test:
             self.y = np.array(self.data['price'])
             self.y_norm = np.array(self.data_norm['price'])
             del self.data['price']
