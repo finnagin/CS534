@@ -31,16 +31,16 @@ def print_stats(data):
     :return: Stastics about each feature printed to the terminal
     """
     for k, v in data.items():
-        print(k, ":")
+        print(str(k)+":")
         # check if categorical
         if k in ['condition', 'grade', 'waterfront']:
             counts = Counter(v).most_common()
             for ck, cv in counts:
                 if str(ck).endswith(".0"):
                     # since these values are floats this removes the trailing .0 for integer values
-                    print("  ", str(ck).replace(".0",""), ": ", cv)
+                    print("  " + str(ck).replace(".0","") + ": " + str(cv))
                 else:
-                    print("  ", ck, ": ", cv)
+                    print("  " + str(ck) + ": "+ str(cv))
         else:
             min_val = str(min(v))
             max_val = str(max(v))
@@ -48,9 +48,9 @@ def print_stats(data):
                 min_val = min_val.replace(".0","")
             if max_val.endswith(".0"):
                 max_val = max_val.replace(".0","")
-            print("  Mean: ", np.mean(v))
-            print("  Standard Deviation: ", np.std(v))
-            print("  Range: [", min_val, ",", max_val, "]")
+            print("  Mean: " + str(np.mean(v)))
+            print("  Standard Deviation: " + str(np.std(v)))
+            print("  Range: [" + min_val + "," + max_val + "]")
 
 
 
@@ -114,21 +114,21 @@ class preprocess():
         self.X_norm = np.transpose(X_norm)
         self.data
         self.data_norm
-        
+
     def get_stats(self, norm=False):
         if norm:
             print_stats(self.data_norm)
             if self.test:
                 print("Price:")
-                min_val = str(min(self.y))
-                max_val = str(max(self.y))
+                min_val = str(min(self.y_norm))
+                max_val = str(max(self.y_norm))
                 if min_val.endswith(".0"):
                     min_val = min_val.replace(".0","")
                 if max_val.endswith(".0"):
                     max_val = max_val.replace(".0","")
-                print("  Mean: ", np.mean(self.y))
-                print("  Standard Deviation: ", np.std(self.y))
-                print("  Range: [", min_val, ",", max_val, "]")
+                print("  Mean: "+ str(np.mean(self.y_norm)))
+                print("  Standard Deviation: " + str(np.std(self.y_norm)))
+                print("  Range: [" + min_val + "," + max_val + "]")
         else:
             print_stats(self.data)
             if self.test:
@@ -139,9 +139,9 @@ class preprocess():
                     min_val = min_val.replace(".0","")
                 if max_val.endswith(".0"):
                     max_val = max_val.replace(".0","")
-                print("  Mean: ", np.mean(self.y))
-                print("  Standard Deviation: ", np.std(self.y))
-                print("  Range: [", min_val, ",", max_val, "]")
+                print("  Mean: " + str(np.mean(self.y)))
+                print("  Standard Deviation: " + str(np.std(self.y)))
+                print("  Range: [" + min_val + "," + max_val + "]")
 
 
 
