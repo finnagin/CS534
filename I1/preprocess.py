@@ -44,7 +44,7 @@ def print_stats(data):
 
 
 class preprocess():
-    def __init__(self, file, test=False):
+    def __init__(self, file, test=False, norm = None):
         self.test=test
         data = read_file(file)
         del data['id']
@@ -56,10 +56,7 @@ class preprocess():
             try:
                 assert len(split)==3
             except:
-                print("Date not valid: ", date)
-                day.append('0')
-                month.append('0')
-                year.append('0')
+                raise Exception("Date not valid: " + date)
             day.append(split[1])
             month.append(split[0])
             year.append(split[2])
@@ -69,10 +66,18 @@ class preprocess():
         data['year'] = year
         for k, v in data.items():
             data[k] = [float(x) for x in v]
-        print_stats(data)
         self.data = data.copy()
+        if norm is None:
+            self.norm = {}
+        else:
+            assert len(norm.keys()) == len(data.keys())
+            self.norm = norm
         for k, v in data.items():
-            max_val = max(v)
+            if norm is None:
+                max_val = max(v)
+                self.norm[k] = max_val
+            else:
+                max_val = norm[k]
             data[k] = [x/max_val for x in v]
         self.data_norm = data.copy()
         if test:
@@ -100,14 +105,14 @@ class preprocess():
             print_stats(self.data_norm)
             if self.test:
                 print("Price:")
-                min_val = str(min(self.y_norm))
-                max_val = str(max(self.y_norm))
+                min_val = str(min(self.y))
+                max_val = str(max(self.y))
                 if min_val.endswith(".0"):
                     min_val = min_val.replace(".0","")
                 if max_val.endswith(".0"):
                     max_val = max_val.replace(".0","")
-                print("  Mean: ", np.mean(self.y_norm))
-                print("  Standard Deviation: ", np.std(self.y_norm))
+                print("  Mean: ", np.mean(self.y))
+                print("  Standard Deviation: ", np.std(self.y))
                 print("  Range: [", min_val, ",", max_val, "]")
         else:
             print_stats(self.data)
