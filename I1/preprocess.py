@@ -88,10 +88,11 @@ class preprocess():
         for k, v in data.items():
             if norm is None:
                 max_val = max(v)
-                self.norm[k] = max_val
+                min_val = min(v)
+                self.norm[k] = (min_val, max_val)
             else:
-                max_val = norm[k]
-            data[k] = [x/max_val for x in v]
+                min_val, max_val = norm[k]
+            data[k] = [(x-min_val)/(max_val-min_val) for x in v]
         self.data_norm = data.copy()
         if not test:
             self.y = np.array(self.data['price'])
@@ -113,6 +114,7 @@ class preprocess():
         self.X_norm = np.transpose(X_norm)
         self.data
         self.data_norm
+        
     def get_stats(self, norm=False):
         if norm:
             print_stats(self.data_norm)
