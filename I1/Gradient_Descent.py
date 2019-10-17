@@ -9,7 +9,7 @@ import numpy as np
 
 # this class runs gradient descent for linear regression, it accepts a target training vector along with a training features matrix where each row represents a single example,
 # additionally it requires a learning rate, regularization constant and two stopping criteria, norm on the gradient and a maximum number of iterations
-# which ever is reached first terminates the descent,
+# which ever is reached first terminates the descent, addid more stuff
 
 class Gradient_Descent:
     
