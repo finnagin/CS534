@@ -92,7 +92,10 @@ class preprocess():
                 self.norm[k] = (min_val, max_val)
             else:
                 min_val, max_val = norm[k]
-            data[k] = [(x-min_val)/(max_val-min_val) for x in v]
+            if max_val-min_val>0:
+                data[k] = [(x-min_val)/(max_val-min_val) for x in v]
+            else:
+                data[k] = [x/max_val for x in v]
         self.data_norm = data.copy()
         if not test:
             self.y = np.array(self.data['price'])
