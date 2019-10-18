@@ -12,12 +12,12 @@ import numpy as np
 
 class Helper_Class:
     
+    def run_gradient_descent(self, y, X, w_0, alpha, lambda_0, epsilon, max_iter):
+        
     # runs gradient descent for linear regression, it accepts a target training vector along with a training features matrix where each row represents a single example,
     # additionally it requires a learning rate, regularization constant and two stopping criteria, norm on the gradient and a maximum number of iterations
     # which ever is reached first terminates the descent and returns a list of the weights as a list of numpy arrays, a list of the gradients as a list of numpy arrays 
     # a list of norms of the gradient
-    
-    def run_gradient_descent(self, y, X, w_0, alpha, lambda_0, epsilon, max_iter):
         
         number_of_training_examples = y.size
         number_of_features = w_0.size
@@ -96,9 +96,11 @@ class Helper_Class:
             training_iteration = training_iteration + 1
     
     
+    
+    def calculuate_SSE(self, w_vecs, y, X,):
+        
     # calculuate the SSE between the target vector y, the feature matrix X where the rows of X are the trainining examples and the columns are the features
     # for each weight vector in the list of numpy arrays representing the weight vectors 
-    def calculuate_SSE(self, w_vecs, y, X,):
         
         number_of_w_vecs = len(w_vecs)
         SSE = np.zeros(number_of_w_vecs)
