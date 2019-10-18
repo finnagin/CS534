@@ -101,7 +101,8 @@ class preprocess():
             self.y_norm = np.array(self.data_norm['price'])
             del self.data['price']
             del self.data_norm['price']
-        self.keys = list(self.data.keys())
+        self.X_keys = list(self.data.keys())
+        self.y_key = 'price'
         X = np.array(list(self.data.values()))
         X_norm = np.array(list(self.data_norm.values()))
         c = 0
@@ -152,6 +153,7 @@ class preprocess():
                 y[idx] = y[idx]*(max_val-min_val)+min_val
             else:
                 y[idx] = y[idx]*max_val
+        return y
 
 
 
