@@ -148,12 +148,13 @@ class preprocess():
 
     def denormalize(self, y, type='price'):
         min_val, max_val = self.norm[type]
+        y_denorm = y.copy()
         for idx in range(len(y)):
             if max_val-min_val>0:
-                y[idx] = y[idx]*(max_val-min_val)+min_val
+                y_denorm[idx] = y[idx]*(max_val-min_val)+min_val
             else:
-                y[idx] = y[idx]*max_val
-        return y
+                y_denorm[idx] = y[idx]*max_val
+        return y_denorm
 
 
 
