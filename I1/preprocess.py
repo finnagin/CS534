@@ -154,7 +154,7 @@ class preprocess():
         if norm:
             print_stats(self.data_norm)
             if not self.test:
-                print("Price:")
+                print("price:")
                 min_val = str(min(self.y_norm))
                 max_val = str(max(self.y_norm))
                 if min_val.endswith(".0"):
@@ -167,7 +167,7 @@ class preprocess():
         else:
             print_stats(self.data)
             if not self.test:
-                print("Price:")
+                print("price:")
                 min_val = str(min(self.y))
                 max_val = str(max(self.y))
                 if min_val.endswith(".0"):
