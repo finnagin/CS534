@@ -1,6 +1,6 @@
 import numpy as np
 import csv
-from collections import Counter
+from collections import Counter, OrderedDict
 
 def read_file(file):
     """
@@ -8,7 +8,7 @@ def read_file(file):
     :return: a dict containg the columns of the csv with the headers as the key
     """
     with open(file) as fid:
-            data={}
+            data=OrderedDict()
             csv_reader = csv.reader(fid)
             first = True
             for row in csv_reader:
@@ -81,7 +81,7 @@ class preprocess():
             data[k] = [float(x) for x in v]
         self.data = data.copy()
         if norm is None:
-            self.norm = {}
+            self.norm = OrderedDict()
         else:
             self.norm = norm
         for k, v in data.items():
@@ -144,6 +144,15 @@ class preprocess():
                 print("  Mean: " + str(np.mean(self.y)))
                 print("  Standard Deviation: " + str(np.std(self.y)))
                 print("  Range: [" + min_val + "," + max_val + "]")
+
+    def denormalize(self, y, type='price'):
+        min_val, max_val = self.norm[type]
+        for idx in range(len(y)):
+            if max_val-min_val>0:
+                y[idx] = y[idx]*(max_val-min_val)+min_val
+            else:
+                y[idx] = y[idx]*max_val
+
 
 
 
