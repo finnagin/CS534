@@ -9,7 +9,7 @@ val = preprocess("data/PA1_dev.csv", norm=train.norm)
 test = preprocess("data/PA1_test.csv", test=True, norm=train.norm)
 
 # You can get the unnormalized X with:
-Print("training X:")
+print("training X:")
 print(train.X)
 # or normaized as follows
 print("normalized training X")
