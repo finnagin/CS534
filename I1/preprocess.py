@@ -83,7 +83,6 @@ class preprocess():
         if norm is None:
             self.norm = {}
         else:
-            assert len(norm.keys()) == len(data.keys())
             self.norm = norm
         for k, v in data.items():
             if norm is None:
