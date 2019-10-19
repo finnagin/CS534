@@ -3,6 +3,15 @@ from preprocess import preprocess
 from Helper_Class import Helper_Class as helper
 import matplotlib.pyplot as plt
 
+color_list = ["#984ea3",
+                "#4daf4a",
+                "#ff7f00",
+                "#e41a1c",
+                "#377eb8",
+                "#ffff33",
+                "#a65628",
+                "#f781bf",
+                "#999999"]
 
 # Part 0
 
@@ -39,10 +48,11 @@ alpha_list = [10**0,10**(-1),10**(-2),10**(-3),10**(-4),10**(-5),10**(-6),10**(-
 # run descent algorithm using each learning rate and compute SSE for training and validation set
 SSE_val_final = []
 final_w_for_alpha = []
+SSE_trains = []
 for alpha in alpha_list:
     
     # run gradient descent using given input values
-    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter, max_grad)
+    w_vecs, w_grad_vecs, w_grad_norms = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter, max_grad)
     
     # compute Sum of Square errors for training and test set for ever weight vector generated using 
     # gradient descent 
@@ -56,18 +66,18 @@ for alpha in alpha_list:
     # with a given iteration
     x_axis = np.linspace(0,len(SSE_train)-1,len(SSE_train))
 
-    plt.figure()
+    if w_grad_norms[-1] < 10:
+        plt.figure()
+        plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", linestyle="--", color=color_list[0]) 
+        plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", linestyle="bs", color=color_list[1])
+        plt.title("SSE for training and validation data, learning rate: " + str(alpha) + " lambda: " + str(lambda_0))
+        plt.xlabel("training iteration")
+        plt.ylabel("SSE")
+        plt.legend()
+        plt.show()
+        #plt.save("val_train_plot_alpha_"+str(alpha)+"_lambda_" + str(lambda_0) + ".png")
 
-    plt.plot(x_axis[1:], SSE_train[1:]/X_train_shape[0], label="Training Data", linestyle="--") 
-    plt.plot(x_axis[1:], SSE_val[1:]/X_val_shape[0], label="Validation Data", linestyle="^")
-    plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
-    plt.xlabel("training iteration")
-    plt.ylabel("SSE")
-    plt.legend()
-    plt.show()
-    print(SSE_train[-1]/X_train_shape[0])
-    print(SSE_val[-1]/X_val_shape[0])
-
+    SSE_trains.append(SSE_train[1:])
 
     """
     plt.figure()
@@ -83,6 +93,20 @@ for alpha in alpha_list:
     
     # create list of final sum of squared errors
     SSE_val_final.append(SSE_val[len(SSE_val)-1])
+
+
+plt.figure()
+idx = 0
+for sse in SSE_trains:
+    plt.plot(x_axis[1:], sse, label="alpha=" + alpha_list[idx], color = color[idx])
+    idx += 1
+plt.title("SSE for Training Data at Various Learning Rates")
+plt.xlabel("training iteration")
+plt.ylabel("SSE")
+plt.legend()
+#plt.save("val_train_plot_learning_rates.png")
+plt.show()
+
     
 # select best learning rate based upon best SSE for final weight using validation data
 alpha_best = alpha_list[SSE_val_final.index(min(SSE_val_final))]    
@@ -117,7 +141,7 @@ for lambda_0 in lambda_list:
     
     # run gradient descent using given input values
 
-    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter, max_grad)
+    w_vecs, w_grad_vecs, w_grad_norms = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter, max_grad)
     
     # compute Sum of Square errors for training and test set for ever weight vector generated using 
     # gradient descent 
@@ -177,7 +201,7 @@ X_train_shape = train.X_norm.shape
 w_0 = np.zeros(X_train_shape[1])
 
 # define list of learning rates to try
-alpha_list = [10**2,10**(1),10**(0),10**(-1),10**(-2),10**(-3)]
+alpha_list = [10**0,0,10**(-3),10**(-6),10**(-9),10**(-15)]
 
 # run descent algorithm using each learning rate and compute SSE for training and validation set
 SSE_val_final = []
@@ -185,7 +209,7 @@ final_w_for_alpha = []
 for alpha in alpha_list:
     
     # run gradient descent using given input values
-    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y, train.X, w_0, alpha, lambda_0, epsilon, max_iter,max_grad)
+    w_vecs, w_grad_vecs, w_grad_norms = myhelperclass.run_gradient_descent(train.y, train.X, w_0, alpha, lambda_0, epsilon, max_iter,max_grad)
     
     # compute Sum of Square errors for training and test set for ever weight vector generated using 
     # gradient descent 

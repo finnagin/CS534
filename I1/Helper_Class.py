@@ -85,7 +85,7 @@ class Helper_Class:
             
             if(training_iteration > max_iter or np.linalg.norm(w_grad) < epsilon or w_grad_norms[len(w_grad_norms)-1] > max_grad):
                 
-                return [w_vecs, w_grad_vecs, w_grad_norms]
+                return (w_vecs, w_grad_vecs, w_grad_norms)
             
             
             # update weight vector using learning rate 
