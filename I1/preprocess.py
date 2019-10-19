@@ -42,9 +42,9 @@ def print_stats(data):
             for ck, cv in counts:
                 if str(ck).endswith(".0"):
                     # since these values are floats this removes the trailing .0 for integer values
-                    print("  " + str(ck).replace(".0","") + ": " + str(cv/len(v)))
+                    print("  " + str(ck).replace(".0","") + ": " + str(float(cv)/len(v)))
                 else:
-                    print("  " + str(ck) + ": "+ str(cv/len(v)))
+                    print("  " + str(ck) + ": "+ str(float(cv)/len(v)))
         # print stats for non-categorical values
         else:
             min_val = str(min(v))
