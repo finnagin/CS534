@@ -3,9 +3,10 @@ from preprocess import preprocess
 from Helper_Class import Helper_Class as helper
 import matplotlib.pyplot as plt
 
+
 color_list = ["#984ea3",
-                "#4daf4a",
                 "#ff7f00",
+                "#4daf4a",
                 "#e41a1c",
                 "#377eb8",
                 "#ffff33",
@@ -29,7 +30,7 @@ myhelperclass = helper()
 w_0 = np.zeros(5)
 
 # set stopping criterias
-epsilon = 3.6
+epsilon = 4
 max_iter = 1500
 max_grad = 10**50
 
@@ -66,7 +67,7 @@ for alpha in alpha_list:
     # with a given iteration
     x_axis = np.linspace(0,len(SSE_train)-1,len(SSE_train))
 
-    if w_grad_norms[-1] < 10:
+    if alpha <= 10**(-5):
         plt.figure()
         plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
         plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
@@ -98,7 +99,7 @@ for alpha in alpha_list:
 plt.figure()
 idx = 0
 for sse in SSE_trains:
-    plt.plot(x_axis[1:], sse, label="alpha=" + alpha_list[idx], color = color[idx])
+    plt.plot(x_axis[1:], sse, label="alpha=" + str(alpha_list[idx]), color = color[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
 plt.xlabel("training iteration")
