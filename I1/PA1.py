@@ -20,7 +20,7 @@ myhelperclass = helper()
 w_0 = np.zeros(5)
 
 # set stopping criterias
-epsilon = .5
+epsilon = 3.6
 max_iter = 1500
 max_grad = 10**50
 
@@ -58,14 +58,18 @@ for alpha in alpha_list:
 
     plt.figure()
 
-    plt.plot(x_axis[1:], SSE_train[1:]/X_train_shape[0], label="Training Data") 
-    plt.plot(x_axis[1:], SSE_val[1:]/X_val_shape[0], label="Validation Data")
+    plt.plot(x_axis[1:], SSE_train[1:]/X_train_shape[0], label="Training Data", linestyle="--") 
+    plt.plot(x_axis[1:], SSE_val[1:]/X_val_shape[0], label="Validation Data", linestyle="^")
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("SSE")
     plt.legend()
     plt.show()
+    print(SSE_train[-1]/X_train_shape[0])
+    print(SSE_val[-1]/X_val_shape[0])
 
+
+    """
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
@@ -73,8 +77,9 @@ for alpha in alpha_list:
     plt.xlabel("training iteration")
     plt.ylabel("gradient norm")
     plt.show()
+    """
 
-    print(w_grad_norms[-1])
+    #print(w_grad_norms[-1])
     
     # create list of final sum of squared errors
     SSE_val_final.append(SSE_val[len(SSE_val)-1])
