@@ -115,22 +115,16 @@ class Helper_Class:
             y_index = 0
             
             # loop over each target variable, calculating error and adding to total sum
-            print(w_vecs[w_vecs_index])
-            print(X)
-            print(w_vecs[w_vecs_index]*X)
-            sse_test = sum(np.square(y-np.dot(X,w_vecs[w_vecs_index])))
+            SSE[w_vecs_index] = sum(np.square(y-np.dot(X,w_vecs[w_vecs_index])))
+            """
             while(y_index < y.size):
                 
                 
                 SSE[w_vecs_index] = SSE[w_vecs_index] + np.square((y[y_index] - np.dot(w_vecs[w_vecs_index],X[y_index,:])))
                 y_index = y_index + 1
-                
+            """
             
-            print(SSE[w_vecs_index])
-            print(sse_test)
-            print(sse_test == SSE[w_vecs_index])
             w_vecs_index = w_vecs_index + 1
-        
         return SSE
     
     
