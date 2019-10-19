@@ -23,6 +23,14 @@ train = preprocess("data/PA1_train.csv")
 val = preprocess("data/PA1_dev.csv", norm=train.norm)
 test = preprocess("data/PA1_test.csv", test=True, norm=train.norm)
 
+print(train.X.shape)
+print(train.X_norm.shape)
+print(val.X.shape)
+print(val.X_norm.shape)
+print(test.X.shape)
+print(test.X_norm.shape)
+
+
 # Print stats to console
 train.get_stats()
 
@@ -74,7 +82,7 @@ for alpha in alpha_list:
         plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
         plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
         plt.title("SSE for training and validation data, learning rate: " + str(alpha) + " lambda: " + str(lambda_0))
-        plt.xlabel("training iteration")
+        plt.xlabel("Iteration")
         plt.ylabel("SSE")
         plt.legend()
         plt.show()
@@ -104,8 +112,7 @@ for sse in SSE_trains[:-3]:
     plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
-plt.ylim(0,50)
-plt.xlabel("training iteration")
+plt.xlabel("Iteration")
 plt.ylabel("SSE")
 plt.legend()
 #plt.save("val_train_plot_learning_rates.png")
@@ -119,7 +126,7 @@ for sse in SSE_trains[-3:]:
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
 plt.ylim(0,50)
-plt.xlabel("training iteration")
+plt.xlabel("Iteration")
 plt.ylabel("SSE")
 plt.legend()
 #plt.save("val_train_plot_learning_rates.png")
@@ -181,7 +188,7 @@ for lambda_0 in lambda_list:
     plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
     plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
-    plt.xlabel("training iteration")
+    plt.xlabel("Iteration")
     plt.ylabel("SSE")
     plt.legend()
     plt.show()
@@ -190,7 +197,7 @@ for lambda_0 in lambda_list:
 
     plt.plot(x_axis, w_grad_norms)
     plt.title("Norm of gradient, lambda:" + str(lambda_0))
-    plt.xlabel("training iteration")
+    plt.xlabel("Iteration")
     plt.ylabel("gradient norm")
     plt.show()
     
@@ -249,7 +256,7 @@ for alpha in alpha_list:
     plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
     plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
-    plt.xlabel("training iteration")
+    plt.xlabel("Iteration")
     plt.ylabel("SSE")
     plt.legend()
     plt.show()
@@ -258,18 +265,9 @@ for alpha in alpha_list:
 
     plt.plot(x_axis, w_grad_norms)
     plt.title("Norm of gradient. alpha:" + str(alpha) + " lambda: "+str(lambda_0))
-    plt.xlabel("training iteration")
+    plt.xlabel("Iteration")
     plt.ylabel("gradient norm")
     plt.show()
     
     # create list of final sum of squared errors
     SSE_val_final.append(SSE_val[-1])
-    
-# select best learning rate based upon best SSE for final weight using validation data
-alpha_best = alpha_list[SSE_val_final.index(min(SSE_val_final))]    
-print("The best learning rate based upon validation SSE is " + str(alpha_best))
-
-# select best final weight vector using best SSE for final weights using validation data
-w_best = final_w_for_alpha[SSE_val_final.index(min(SSE_val_final))]
-print("The best final weight based upon validation SSE is" +str(w_best))
-print("The feature with the greatest weight is in position " + str(np.max((np.abs(w_best)))))
