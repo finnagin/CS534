@@ -1,6 +1,5 @@
 import numpy as np
 from preprocess import preprocess
-import Gradient_Descent as gd
 from Helper_Class import Helper_Class as helper
 import matplotlib.pyplot as plt
 
@@ -89,8 +88,11 @@ print("The feature with the greatest weight is in position " + str(np.max((np.ab
 
 # Part 2
 
-# set learning rate - must be selected
-alpha = 10**(-5)
+# set learning rate using best alpha from #Part 1
+alpha = alpha_best
+
+X_train_shape = train.X_norm.shape
+w_0 = np.zeros(X_train_shape[1])
 
 # define list of learning rates to try
 
@@ -134,7 +136,7 @@ for lambda_0 in lambda_list:
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
-    plt.title("Norm of gradient, lambda:" + str(lambda_0)
+    plt.title("Norm of gradient, lambda:" + str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("gradient norm")
     plt.show()
@@ -152,14 +154,13 @@ print("The best final weight based upon validation SSE is" +str(w_best))
 
 
 # Part 3
-w_0 = np.zeros(5)
 
 # set stopping criterias
 epsilon = 0
 max_iter = 10000
 
 # set regularization constant to zero
-lambda_0 = 
+lambda_0 = 0
 
 # set initial weights to zero
 X_train_shape = train.X_norm.shape
