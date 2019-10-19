@@ -102,7 +102,7 @@ for sse in SSE_trains:
     plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
-plt.yaxis([0,30])
+plt.ylim(0,50)
 plt.xlabel("training iteration")
 plt.ylabel("SSE")
 plt.legend()
