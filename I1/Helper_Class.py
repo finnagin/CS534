@@ -48,9 +48,11 @@ class Helper_Class:
         
             # use the fact python has starting index of 0
             
-            w_grad = np.zeros(number_of_features)
+            #w_grad = np.zeros(number_of_features)
             
-            
+            w_grad = sum(((np.dot(X,w)-y)*X.T).T) + lambda_0*2*np.insert(w[1:],0,0)
+            #w_grad_test = sum((2*(np.dot(X,w)-y)*X.T).T) + lambda_0*2*np.insert(w[1:],0,0)
+            """
             while(w_index < number_of_features):
             
                 y_index = 0;
@@ -70,7 +72,7 @@ class Helper_Class:
                     w_grad[w_index] = w_grad[w_index] + lambda_0*2* w[w_index]
                 
                 w_index = w_index + 1
-        
+            """
             # append current gradient vector to list
             
             w_grad_vecs.append(w_grad)
