@@ -68,8 +68,8 @@ for alpha in alpha_list:
 
     if w_grad_norms[-1] < 10:
         plt.figure()
-        plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", linestyle="--", color=color_list[0]) 
-        plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", linestyle="bs", color=color_list[1])
+        plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
+        plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
         plt.title("SSE for training and validation data, learning rate: " + str(alpha) + " lambda: " + str(lambda_0))
         plt.xlabel("training iteration")
         plt.ylabel("SSE")
