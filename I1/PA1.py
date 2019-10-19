@@ -2,6 +2,8 @@ import numpy as np
 from preprocess import preprocess
 from Helper_Class import Helper_Class as helper
 import matplotlib.pyplot as plt
+import argparse
+
 
 
 color_list = ["#984ea3",
@@ -61,7 +63,7 @@ for alpha in alpha_list:
     SSE_val = myhelperclass.calculuate_SSE(w_vecs, val.y_norm, val.X_norm)
 
     # create list of ending weight vectors, 
-    final_w_for_alpha.append(w_vecs[len(SSE_train)-1])
+    final_w_for_alpha.append(w_vecs[-1])
     
     # create integer based spacing to graph SSE for each weight vector associated
     # with a given iteration
@@ -93,12 +95,26 @@ for alpha in alpha_list:
     #print(w_grad_norms[-1])
     
     # create list of final sum of squared errors
-    SSE_val_final.append(SSE_val[len(SSE_val)-1])
+    SSE_val_final.append(SSE_val[-1])
 
 
 plt.figure()
 idx = 0
-for sse in SSE_trains:
+for sse in SSE_trains[:-3]:
+    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
+    idx += 1
+plt.title("SSE for Training Data at Various Learning Rates")
+plt.ylim(0,50)
+plt.xlabel("training iteration")
+plt.ylabel("SSE")
+plt.legend()
+#plt.save("val_train_plot_learning_rates.png")
+plt.show()
+
+
+plt.figure()
+idx = 0
+for sse in SSE_trains[-3:]:
     plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
@@ -153,7 +169,7 @@ for lambda_0 in lambda_list:
 
     # create list of ending weight vectors, 
     
-    final_w_for_lambda_0.append(w_vecs[len(SSE_train)-1])
+    final_w_for_lambda_0.append(w_vecs[-1])
     
     # create integer based spacing to graph SSE for each weight vector associated
     # with a given iteration
@@ -162,11 +178,12 @@ for lambda_0 in lambda_list:
 
     plt.figure()
 
-    plt.plot(x_axis,SSE_train, x_axis, SSE_val)
+    plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
+    plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("SSE")
-    plt.legend(["SSE_Training", "SSE_Testing"])
+    plt.legend()
     plt.show()
 
     plt.figure()
@@ -178,7 +195,9 @@ for lambda_0 in lambda_list:
     plt.show()
     
     # create list of final sum of squared errors
-    SSE_val_final.append(SSE_val[len(SSE_val)-1])
+    SSE_val_final.append(SSE_val[-1])
+    print(str(lambda_0)+":")
+    print("  " + str(SSE_val[-1]))
     
 # select best learning rate based upon best SSE for final weight using validation data
 lambda_best = lambda_list[SSE_val_final.index(min(SSE_val_final))]
@@ -219,7 +238,7 @@ for alpha in alpha_list:
     SSE_val = myhelperclass.calculuate_SSE(w_vecs, val.y, val.X)
 
     # create list of ending weight vectors, 
-    final_w_for_alpha.append(w_vecs[len(SSE_train)-1])
+    final_w_for_alpha.append(w_vecs[-1])
     
     # create integer based spacing to graph SSE for each weight vector associated
     # with a given iteration
@@ -227,11 +246,12 @@ for alpha in alpha_list:
 
     plt.figure()
 
-    plt.plot(x_axis,SSE_train, x_axis, SSE_val)
+    plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
+    plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("SSE")
-    plt.legend(["SSE_Training", "SSE_Testing"])
+    plt.legend()
     plt.show()
 
     plt.figure()
@@ -243,7 +263,7 @@ for alpha in alpha_list:
     plt.show()
     
     # create list of final sum of squared errors
-    SSE_val_final.append(SSE_val[len(SSE_val)-1])
+    SSE_val_final.append(SSE_val[-1])
     
 # select best learning rate based upon best SSE for final weight using validation data
 alpha_best = alpha_list[SSE_val_final.index(min(SSE_val_final))]    
