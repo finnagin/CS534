@@ -99,7 +99,7 @@ for alpha in alpha_list:
 plt.figure()
 idx = 0
 for sse in SSE_trains:
-    plt.plot(x_axis[1:], sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
+    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
 plt.xlabel("training iteration")
