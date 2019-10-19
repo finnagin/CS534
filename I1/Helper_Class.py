@@ -18,7 +18,7 @@ class Helper_Class:
     # which ever is reached first terminates the descent and returns a list of the weights as a list of numpy arrays, a list of the gradients as a list of numpy arrays 
     # a list of norms of the gradient
     
-    def run_gradient_descent(self, y, X, w_0, alpha, lambda_0, epsilon, max_iter):
+    def run_gradient_descent(self, y, X, w_0, alpha, lambda_0, epsilon, max_iter, max_grad):
         
         number_of_training_examples = y.size
         number_of_features = w_0.size
@@ -83,7 +83,7 @@ class Helper_Class:
             
             # exit loop if done
             
-            if(training_iteration > max_iter or np.linalg.norm(w_grad) < epsilon or w_grad_norms[len(w_grad_norms)-1] > 10**50):
+            if(training_iteration > max_iter or np.linalg.norm(w_grad) < epsilon or w_grad_norms[len(w_grad_norms)-1] > max_grad):
                 
                 return [w_vecs, w_grad_vecs, w_grad_norms]
             
