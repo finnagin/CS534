@@ -21,7 +21,7 @@ w_0 = np.zeros(5)
 
 # set stopping criterias
 epsilon = .5
-max_iter = 2000
+max_iter = 1500
 max_grad = 10**50
 
 # set regularization constant to zero
@@ -31,6 +31,8 @@ lambda_0 = 0
 # set initial weights to zero
 X_train_shape = train.X_norm.shape
 X_val_shape = val.X_norm.shape
+print(X_train_shape)
+print(X_val_shape)
 w_0 = np.zeros(X_train_shape[1])
 
 # define list of learning rates to try
@@ -73,6 +75,8 @@ for alpha in alpha_list:
     plt.xlabel("training iteration")
     plt.ylabel("gradient norm")
     plt.show()
+
+    print(w_grad_norms[-1])
     
     # create list of final sum of squared errors
     SSE_val_final.append(SSE_val[len(SSE_val)-1])
