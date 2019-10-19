@@ -57,7 +57,7 @@ for alpha in alpha_list:
     plt.figure()
 
     plt.plot(x_axis[1:], SSE_train[1:], label="Training Data") 
-    plt.plot(x_axis[1:], SSE_val[1;], label="Validation Data")
+    plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data")
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("SSE")
