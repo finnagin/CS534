@@ -23,6 +23,7 @@ w_0 = np.zeros(5)
 # set stopping criterias
 epsilon = .5
 max_iter = 1000
+max_grad = 10**50
 
 # set regularization constant to zero
 lambda_0 = 0
@@ -40,7 +41,7 @@ final_w_for_alpha = []
 for alpha in alpha_list:
     
     # run gradient descent using given input values
-    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter)
+    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter, max_grad)
     
     # compute Sum of Square errors for training and test set for ever weight vector generated using 
     # gradient descent 
@@ -104,7 +105,7 @@ for lambda_0 in lambda_list:
     
     # run gradient descent using given input values
 
-    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter)
+    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y_norm, train.X_norm, w_0, alpha, lambda_0, epsilon, max_iter, max_grad)
     
     # compute Sum of Square errors for training and test set for ever weight vector generated using 
     # gradient descent 
@@ -173,7 +174,7 @@ final_w_for_alpha = []
 for alpha in alpha_list:
     
     # run gradient descent using given input values
-    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y, train.X, w_0, alpha, lambda_0, epsilon, max_iter)
+    [w_vecs, w_grad_vecs, w_grad_norms] = myhelperclass.run_gradient_descent(train.y, train.X, w_0, alpha, lambda_0, epsilon, max_iter,max_grad)
     
     # compute Sum of Square errors for training and test set for ever weight vector generated using 
     # gradient descent 
