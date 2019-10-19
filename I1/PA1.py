@@ -41,7 +41,7 @@ w_0 = np.zeros(5)
 
 # set stopping criterias
 epsilon = 5
-max_iter = 150
+max_iter = 3000
 max_grad = 10**50
 
 # set regularization constant to zero
@@ -108,18 +108,28 @@ for alpha in alpha_list:
 
 plt.figure()
 idx = 0
-for sse in SSE_trains[:-3]:
+for sse in SSE_trains[:-5]:
     plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
-plt.ylim(0,10**4)
-plt.xlim(0,150)
+plt.ylim(0,10**10)
 plt.xlabel("Iteration")
 plt.ylabel("SSE")
 plt.legend()
 #plt.save("val_train_plot_learning_rates.png")
 plt.show()
 
+
+plt.figure()
+sse = SSE_trains[-4]
+idx = 0
+plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
+plt.title("SSE for Training Data at Various Learning Rates")
+plt.xlabel("Iteration")
+plt.ylabel("SSE")
+plt.legend()
+#plt.save("val_train_plot_learning_rates.png")
+plt.show()
 
 plt.figure()
 idx = 0
