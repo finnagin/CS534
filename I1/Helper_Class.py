@@ -115,7 +115,7 @@ class Helper_Class:
             y_index = 0
             
             # loop over each target variable, calculating error and adding to total sum
-            sse_test = sum(np.square(y- np.dot(w_vecs[w_vecs_index],X)))
+            sse_test = sum(np.square(y-w_vecs[w_vecs_index]*X))
             while(y_index < y.size):
                 
                 
