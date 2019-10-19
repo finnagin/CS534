@@ -31,8 +31,6 @@ lambda_0 = 0
 # set initial weights to zero
 X_train_shape = train.X_norm.shape
 X_val_shape = val.X_norm.shape
-print(X_train_shape)
-print(X_val_shape)
 w_0 = np.zeros(X_train_shape[1])
 
 # define list of learning rates to try
@@ -60,8 +58,8 @@ for alpha in alpha_list:
 
     plt.figure()
 
-    plt.plot(x_axis[1:], SSE_train[1:]/X_train_shape[1], label="Training Data") 
-    plt.plot(x_axis[1:], SSE_val[1:]/X_val_shape[1], label="Validation Data")
+    plt.plot(x_axis[1:], SSE_train[1:]/X_train_shape[0], label="Training Data") 
+    plt.plot(x_axis[1:], SSE_val[1:]/X_val_shape[0], label="Validation Data")
     plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("SSE")
