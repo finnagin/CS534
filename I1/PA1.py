@@ -67,7 +67,7 @@ for alpha in alpha_list:
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
-    plt.title("Norm of gradient")
+    plt.title("Norm of gradient, alpha: " + str(alpha))
     plt.xlabel("training iteration")
     plt.ylabel("gradient norm")
     plt.show()
@@ -134,7 +134,7 @@ for lambda_0 in lambda_list:
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
-    plt.title("Norm of gradient")
+    plt.title("Norm of gradient, lambda:" + str(lambda_0)
     plt.xlabel("training iteration")
     plt.ylabel("gradient norm")
     plt.show()
@@ -200,7 +200,7 @@ for alpha in alpha_list:
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
-    plt.title("Norm of gradient")
+    plt.title("Norm of gradient. alpha:" + str(alpha) + " lambda: "+str(lambda_0))
     plt.xlabel("training iteration")
     plt.ylabel("gradient norm")
     plt.show()
