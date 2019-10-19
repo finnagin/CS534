@@ -30,7 +30,7 @@ myhelperclass = helper()
 w_0 = np.zeros(5)
 
 # set stopping criterias
-epsilon = 4
+epsilon = 5
 max_iter = 1500
 max_grad = 10**50
 
@@ -99,7 +99,7 @@ for alpha in alpha_list:
 plt.figure()
 idx = 0
 for sse in SSE_trains:
-    plt.plot(x_axis[1:], sse, label="alpha=" + str(alpha_list[idx]), color = color[idx])
+    plt.plot(x_axis[1:], sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     idx += 1
 plt.title("SSE for Training Data at Various Learning Rates")
 plt.xlabel("training iteration")
