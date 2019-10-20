@@ -84,59 +84,22 @@ if 1 in args.parts:
         print("(Training SSE, Validation SSE) for Learning Rate " +str(alpha) + ":")
         print("  " + str(SSE_train[-1]) + ", " + str(SSE_val[-1]))
 
-        if alpha <= 10**(-5):
-            if not args.hide:
-                plt.figure()
-                plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
-                plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
-                plt.title("SSE for training and validation data, learning rate: " + str(alpha) + " lambda: " + str(lambda_0))
-                plt.xlabel("Iteration")
-                plt.ylabel("SSE")
-                plt.legend()
-                plt.savefig("data/sse_val_train_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
+        if not args.hide:
+            plt.figure()
+            plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
+            plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
+            plt.title("SSE for training and validation data, learning rate: " + str(alpha) + " lambda: " + str(lambda_0))
+            plt.xlabel("Iteration")
+            plt.ylabel("SSE")
+            plt.legend()
+            plt.savefig("data/part_1_sse_val_train_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
 
         SSE_trains.append(SSE_train)
-
-        """
-        plt.figure()
-
-        plt.plot(x_axis, w_grad_norms)
-        plt.title("Norm of gradient, alpha: " + str(alpha))
-        plt.xlabel("training iteration")
-        plt.ylabel("gradient norm")
-        plt.show()
-        """
-
-        #print(w_grad_norms[-1])
         
         # create list of final sum of squared errors
         SSE_val_final.append(SSE_val[-1])
 
     if not args.hide:
-        plt.figure()
-        idx = 0
-        sse = SSE_trains[-5]
-        plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[-5]), color = color_list[idx])
-        plt.title("SSE for Training Data at Learning Rate: " + str(alpha_list[-5]))
-        plt.ylim(0,10**10)
-        plt.xlabel("Iteration")
-        plt.ylabel("SSE")
-        plt.legend()
-        #plt.save("val_train_plot_learning_rates.png")
-        plt.savefig("data/train_sse_alpha_" + str(alpha_list[-5]) + ".png", dpi=100)
-
-
-        plt.figure()
-        sse = SSE_trains[-4]
-        idx = 0
-        plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[-4]), color = color_list[idx])
-        plt.title("SSE for Training Data at Learning Rate: " + str(alpha_list[-4]))
-        plt.xlabel("Iteration")
-        plt.ylabel("SSE")
-        plt.legend()
-        #plt.save("val_train_plot_learning_rates.png")
-        plt.savefig("data/train_sse_alpha_" + str(alpha_list[-4]) + ".png", dpi=100)
-
         plt.figure()
         idx = 0
         for sse in SSE_trains[-3:]:
@@ -148,7 +111,7 @@ if 1 in args.parts:
         plt.ylabel("SSE")
         plt.legend()
         #plt.save("val_train_plot_learning_rates.png")
-        plt.savefig("data/train_sse_convergent_rates.png", dpi=100)
+        plt.savefig("data/part_1_train_sse_convergent_rates.png", dpi=100)
 
         
     # select best learning rate based upon best SSE for final weight using validation data
@@ -217,17 +180,7 @@ if 2 in args.parts:
             plt.xlabel("Iteration")
             plt.ylabel("SSE")
             plt.legend()
-            plt.savefig("data/sse_val_train_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
-
-        """
-        plt.figure()
-
-        plt.plot(x_axis, w_grad_norms)
-        plt.title("Norm of gradient, lambda:" + str(lambda_0))
-        plt.xlabel("Iteration")
-        plt.ylabel("gradient norm")
-        plt.show()
-        """
+            plt.savefig("data/part_2_sse_val_train_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
 
         if lambda_0 in [0,10**(-2),10]:
             sorted_idx = np.argsort(-np.abs(w_vecs[-1]))
@@ -243,14 +196,9 @@ if 2 in args.parts:
     # select best learning rate based upon best SSE for final weight using validation data
     lambda_best = lambda_list[SSE_val_final.index(min(SSE_val_final))]
     print("The best regularization constant based upon validation SSE is " + str(lambda_best))
+    best_idx=SSE_val_final.index(min(SSE_val_final))
+    w_best = final_w_for_alpha[best_idx]
         
-    # select best final weight vector using best SSE for final weights using validation data
-    #w_best = final_w_for_lambda_0[SSE_val_final.index(min(SSE_val_final))]
-    #print("The best final weight based upon validation SSE is" +str(w_best))
-    #sorted_idx = np.argsort(-np.abs(w_best))
-    #print("The values of w sorted by magnitude")
-    #for idx in sorted_idx:
-    #    print("  "+train.keys[idx]+": "+str(w_best[idx]))
 
 
 # Part 3
@@ -302,17 +250,7 @@ if 3 in args.parts:
             plt.xlabel("Iteration")
             plt.ylabel("SSE")
             plt.legend()
-            plt.savefig("data/sse_unnormalized_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
-
-        """
-        plt.figure()
-
-        plt.plot(x_axis, w_grad_norms)
-        plt.title("Norm of gradient. alpha:" + str(alpha) + " lambda: "+str(lambda_0))
-        plt.xlabel("Iteration")
-        plt.ylabel("gradient norm")
-        plt.show()
-        """
+            plt.savefig("data/part_3_sse_unnormalized_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
 
         # create list of final sum of squared errors
         SSE_val_final.append(SSE_val[-1])
