@@ -302,6 +302,8 @@ if 3 in args.parts:
 
 if 2 in args.parts:
     with open("pred.csv","w") as fid:
+        min_val, max_val = train.norm['price']
         for x in test.X_norm:
             y = np.dot(w_best,x)
+            y = y*(max_val-min_val)+min_val
             fid.write(str(y)+"\n")
