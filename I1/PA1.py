@@ -33,6 +33,7 @@ test = preprocess("data/PA1_test.csv", test=True, norm=train.norm)
 
 # Print stats to console
 if 0 in args.parts:
+    print("Starting Part 0...")
     train.get_stats()
 
 
@@ -58,6 +59,7 @@ w_0 = np.zeros(X_train_shape[1])
 alpha_list = [10**0,10**(-1),10**(-2),10**(-3),10**(-4),10**(-5),10**(-6),10**(-7)]
 
 if 1 in args.parts:
+    print("Starting Part 1...")
     # run descent algorithm using each learning rate and compute SSE for training and validation set
     SSE_val_final = []
     final_w_for_alpha = []
@@ -175,6 +177,7 @@ X_train_shape = train.X_norm.shape
 w_0 = np.zeros(X_train_shape[1])
 
 if 2 in args.parts:
+    print("Starting Part 2...")
     # define list of learning rates to try
     lambda_list = [0, 10**(-3), 10**(-2), 10**(-1), 1, 10, 100]
 
@@ -251,6 +254,7 @@ if 2 in args.parts:
 # Part 3
 
 if 3 in args.parts:
+    print("Starting Part 3...")
     # set stopping criterias
     epsilon = 0
     max_iter = 10000
