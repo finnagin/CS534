@@ -197,7 +197,7 @@ if 2 in args.parts:
     lambda_best = lambda_list[SSE_val_final.index(min(SSE_val_final))]
     print("The best regularization constant based upon validation SSE is " + str(lambda_best))
     best_idx=SSE_val_final.index(min(SSE_val_final))
-    w_best = final_w_for_alpha[best_idx]
+    w_best = final_w_for_lambda_0[best_idx]
         
 
 
