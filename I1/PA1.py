@@ -226,8 +226,8 @@ if 2 in args.parts:
 
         if lambda_0 in [0,10**(-2),10]:
             sorted_idx = np.argsort(-np.abs(w_vecs[-1]))
-            print("The values of w for lamba = "+str(lambda_0)+" sorted by magnitude:")
-            for idx in sorted_idx:
+            print("The values of w for lamba = "+str(lambda_0)+":")
+            for idx in range(len(w_vecs)):
                 print("  "+train.keys[idx]+": "+str(w_vecs[-1][idx]))
 
         # create list of final sum of squared errors
