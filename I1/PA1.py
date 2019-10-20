@@ -8,7 +8,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--parts", "-p", type=int, nargs='*', help="The parts you want to run this on seperated by spaces", default=[0, 1, 2, 3])
-arser.add_argument("--hide", action='store_true', help="Add if you want to hide the plots")
+parser.add_argument("--hide", action='store_true', help="Add if you want to hide the plots")
 
 args = parser.parse_args()
 
