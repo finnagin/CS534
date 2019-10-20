@@ -42,7 +42,7 @@ w_0 = np.zeros(5)
 
 # set stopping criterias
 epsilon = 5
-max_iter = 3000
+max_iter = 5000
 max_grad = 10**50
 
 # set regularization constant to zero
@@ -90,7 +90,7 @@ if 1 in args.parts:
             plt.show()
             #plt.save("val_train_plot_alpha_"+str(alpha)+"_lambda_" + str(lambda_0) + ".png")
 
-        SSE_trains.append(SSE_train[1:])
+        SSE_trains.append(SSE_train)
 
         """
         plt.figure()
@@ -110,9 +110,8 @@ if 1 in args.parts:
 
     plt.figure()
     idx = 0
-    for sse in SSE_trains[:-5]:
-        plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
-        idx += 1
+    sse = SSE_trains[:-5]
+    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
     plt.title("SSE for Training Data at Various Learning Rates")
     plt.ylim(0,10**10)
     plt.xlabel("Iteration")
@@ -232,12 +231,12 @@ if 2 in args.parts:
     print("The best regularization constant based upon validation SSE is " + str(lambda_best))
         
     # select best final weight vector using best SSE for final weights using validation data
-    w_best = final_w_for_lambda_0[SSE_val_final.index(min(SSE_val_final))]
-    print("The best final weight based upon validation SSE is" +str(w_best))
-    sorted_idx = np.argsort(-np.abs(w_best))
-    print("The values of w sorted by magnitude")
-    for idx in sorted_idx:
-        print("  "+train.keys[idx]+": "+str(w_best[idx]))
+    #w_best = final_w_for_lambda_0[SSE_val_final.index(min(SSE_val_final))]
+    #print("The best final weight based upon validation SSE is" +str(w_best))
+    #sorted_idx = np.argsort(-np.abs(w_best))
+    #print("The values of w sorted by magnitude")
+    #for idx in sorted_idx:
+    #    print("  "+train.keys[idx]+": "+str(w_best[idx]))
 
 
 # Part 3
