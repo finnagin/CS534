@@ -31,7 +31,7 @@ test = preprocess("data/PA1_test.csv", test=True, norm=train.norm)
 
 
 # Print stats to console
-if 0 in args.parts
+if 0 in args.parts:
     train.get_stats()
 
 
@@ -154,7 +154,11 @@ if 1 in args.parts:
     best_idx=SSE_val_final.index(min(SSE_val_final))
     w_best = final_w_for_alpha[best_idx]
     print("The best final weight based upon validation SSE is" +str(w_best))
-    print("The feature with the greatest weight is in position " + str(w_best.index(np.max((np.abs(w_best))))))
+    sorted_idx = np.argsort(np.abs(w_best))
+    print("The values of w sorted by magnitude")
+    for idx in sorted_idx:
+        print("  "+train.keys[idx]+": "+str(w_best[idx]))
+    
 
 
 
@@ -229,6 +233,10 @@ if 2 in args.parts:
     # select best final weight vector using best SSE for final weights using validation data
     w_best = final_w_for_lambda_0[SSE_val_final.index(min(SSE_val_final))]
     print("The best final weight based upon validation SSE is" +str(w_best))
+    sorted_idx = np.argsort(np.abs(w_best))
+    print("The values of w sorted by magnitude")
+    for idx in sorted_idx:
+        print("  "+train.keys[idx]+": "+str(w_best[idx]))
 
 
 # Part 3
