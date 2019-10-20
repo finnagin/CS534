@@ -50,7 +50,7 @@ class Helper_Class:
             
             #w_grad = np.zeros(number_of_features)
             
-            w_grad = 2*sum(((np.dot(X,w)-y)*X.T).T) + lambda_0*2*np.insert(w[1:],0,0)
+            w_grad = 2*sum(((y-np.dot(X,w))*X.T).T) + lambda_0*2*np.insert(w[1:],0,0)
             #w_grad_test = sum((2*(np.dot(X,w)-y)*X.T).T) + lambda_0*2*np.insert(w[1:],0,0)
             """
             while(w_index < number_of_features):

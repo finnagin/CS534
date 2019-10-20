@@ -150,9 +150,10 @@ alpha_best = alpha_list[SSE_val_final.index(min(SSE_val_final))]
 print("The best learning rate based upon validation SSE is " + str(alpha_best))
 
 # select best final weight vector using best SSE for final weights using validation data
-w_best = final_w_for_alpha[SSE_val_final.index(min(SSE_val_final))]
+best_idx=SSE_val_final.index(min(SSE_val_final))
+w_best = final_w_for_alpha[best_idx]
 print("The best final weight based upon validation SSE is" +str(w_best))
-print("The feature with the greatest weight is in position " + str(np.max((np.abs(w_best)))))
+print("The feature with the greatest weight is in position " + str(w_best.index(np.max((np.abs(w_best)))))
 
 
 
@@ -205,6 +206,7 @@ for lambda_0 in lambda_list:
     plt.legend()
     plt.show()
 
+    """
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
@@ -212,7 +214,8 @@ for lambda_0 in lambda_list:
     plt.xlabel("Iteration")
     plt.ylabel("gradient norm")
     plt.show()
-    
+    """
+
     # create list of final sum of squared errors
     SSE_val_final.append(SSE_val[-1])
     print(str(lambda_0)+":")
@@ -273,6 +276,7 @@ for alpha in alpha_list:
     plt.legend()
     plt.show()
 
+    """
     plt.figure()
 
     plt.plot(x_axis, w_grad_norms)
@@ -280,6 +284,7 @@ for alpha in alpha_list:
     plt.xlabel("Iteration")
     plt.ylabel("gradient norm")
     plt.show()
-    
+    """
+
     # create list of final sum of squared errors
     SSE_val_final.append(SSE_val[-1])
