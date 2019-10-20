@@ -43,7 +43,7 @@ w_0 = np.zeros(5)
 
 # set stopping criterias
 epsilon = 5
-max_iter = 10000
+max_iter = 12000
 max_grad = 10**50
 
 # set regularization constant to zero
