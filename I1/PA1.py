@@ -87,8 +87,7 @@ if 1 in args.parts:
             plt.xlabel("Iteration")
             plt.ylabel("SSE")
             plt.legend()
-            plt.show()
-            #plt.save("val_train_plot_alpha_"+str(alpha)+"_lambda_" + str(lambda_0) + ".png")
+            plt.savefig("data/sse_val_train_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
 
         SSE_trains.append(SSE_train)
 
@@ -110,40 +109,40 @@ if 1 in args.parts:
 
     plt.figure()
     idx = 0
-    sse = SSE_trains[:-5]
-    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
-    plt.title("SSE for Training Data at Various Learning Rates")
+    sse = SSE_trains[-5]
+    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[-5]), color = color_list[idx])
+    plt.title("SSE for Training Data at Learning Rate: " + str(alpha_list[-5]))
     plt.ylim(0,10**10)
     plt.xlabel("Iteration")
     plt.ylabel("SSE")
     plt.legend()
     #plt.save("val_train_plot_learning_rates.png")
-    plt.show()
+    plt.savefig("data/train_sse_alpha_" + str(alpha_list[-5]) + ".png", dpi=100)
 
 
     plt.figure()
     sse = SSE_trains[-4]
     idx = 0
-    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
-    plt.title("SSE for Training Data at Various Learning Rates")
+    plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[-4]), color = color_list[idx])
+    plt.title("SSE for Training Data at Learning Rate: " + str(alpha_list[-4]))
     plt.xlabel("Iteration")
     plt.ylabel("SSE")
     plt.legend()
     #plt.save("val_train_plot_learning_rates.png")
-    plt.show()
+    plt.savefig("data/train_sse_alpha_" + str(alpha_list[-4]) + ".png", dpi=100)
 
     plt.figure()
     idx = 0
     for sse in SSE_trains[-3:]:
         plt.plot(np.linspace(0,len(sse)-1,len(sse)), sse, label="alpha=" + str(alpha_list[idx]), color = color_list[idx])
         idx += 1
-    plt.title("SSE for Training Data at Various Learning Rates")
-    plt.ylim(0,50)
+    plt.title("SSE for Training Data at Convergent Learning Rates")
+    plt.ylim(0,40)
     plt.xlabel("Iteration")
     plt.ylabel("SSE")
     plt.legend()
     #plt.save("val_train_plot_learning_rates.png")
-    plt.show()
+    plt.savefig("data/train_sse_convergent_rates.png", dpi=100)
 
         
     # select best learning rate based upon best SSE for final weight using validation data
@@ -209,7 +208,7 @@ if 2 in args.parts:
             plt.xlabel("Iteration")
             plt.ylabel("SSE")
             plt.legend()
-            plt.show()
+            plt.savefig("data/sse_val_train_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
 
         """
         plt.figure()
@@ -284,7 +283,7 @@ if 3 in args.parts:
         plt.xlabel("Iteration")
         plt.ylabel("SSE")
         plt.legend()
-        plt.show()
+        plt.savefig("data/sse_unnormalized_alpha_" + str(alpha) + "_lambda_" + str(lambda_0) + ".png", dpi=100)
 
         """
         plt.figure()
