@@ -10,6 +10,6 @@ Use python 2.7
   ```
   python PA1.py -p 1 3
   ```
-  will run parts 1 and 3.
+  will run parts 1 and 3.  
 4) After running it should output results to the terminal and save plots into the data subdirectory. These plots will be named part_x_discription_of_content.png.
 5) if part 2 was run it should also output a predition file for the test data in the root directory named `pred.csv`
