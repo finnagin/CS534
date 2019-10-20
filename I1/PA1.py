@@ -153,7 +153,7 @@ print("The best learning rate based upon validation SSE is " + str(alpha_best))
 best_idx=SSE_val_final.index(min(SSE_val_final))
 w_best = final_w_for_alpha[best_idx]
 print("The best final weight based upon validation SSE is" +str(w_best))
-print("The feature with the greatest weight is in position " + str(w_best.index(np.max((np.abs(w_best)))))
+print("The feature with the greatest weight is in position " + str(w_best.index(np.max((np.abs(w_best))))))
 
 
 
