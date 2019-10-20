@@ -6,7 +6,7 @@ Created on Tue Oct 15 20:26:22 2019
 @author: Michael
 """
 
-import numpy as np 
+import numpy as np
 
 # this class provides helper functions for implementation assignment 1. 
 
