@@ -285,6 +285,9 @@ if 3 in args.parts:
         # with a given iteration
         x_axis = np.linspace(0,len(SSE_train)-1,len(SSE_train))
 
+        print("(Training SSE, Validation SSE) for Learning Rate " +str(alpha) + " on unnormalized data:")
+        print("  " + str(SSE_train[-1]) + ", " + str(SSE_val[-1]))
+
         if not args.hide:
             plt.figure()
             plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
