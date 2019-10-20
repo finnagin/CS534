@@ -8,6 +8,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--parts", "-p", type=int, nargs='*', help="The parts you want to run this on seperated by spaces", default=[0, 1, 2, 3])
+arser.add_argument("--hide", action='store_true', help="Add if you want to hide the plots")
 
 args = parser.parse_args()
 
@@ -154,7 +155,7 @@ if 1 in args.parts:
     best_idx=SSE_val_final.index(min(SSE_val_final))
     w_best = final_w_for_alpha[best_idx]
     print("The best final weight based upon validation SSE is" +str(w_best))
-    sorted_idx = np.flip(np.argsort(np.abs(w_best)))
+    sorted_idx = np.argsort(-np.abs(w_best))
     print("The values of w sorted by magnitude")
     for idx in sorted_idx:
         print("  "+train.keys[idx]+": "+str(w_best[idx]))
@@ -200,16 +201,16 @@ if 2 in args.parts:
         # with a given iteration
         
         x_axis = np.linspace(0,len(SSE_train)-1,len(SSE_train))
+        if not args.hide:
+            plt.figure()
 
-        plt.figure()
-
-        plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
-        plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
-        plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
-        plt.xlabel("Iteration")
-        plt.ylabel("SSE")
-        plt.legend()
-        plt.show()
+            plt.plot(x_axis[1:], SSE_train[1:], label="Training Data", color=color_list[0]) 
+            plt.plot(x_axis[1:], SSE_val[1:], label="Validation Data", color=color_list[1])
+            plt.title("SSE for training and validation data, alpha: " + str(alpha) + " lambda: " + str(lambda_0))
+            plt.xlabel("Iteration")
+            plt.ylabel("SSE")
+            plt.legend()
+            plt.show()
 
         """
         plt.figure()
@@ -233,7 +234,7 @@ if 2 in args.parts:
     # select best final weight vector using best SSE for final weights using validation data
     w_best = final_w_for_lambda_0[SSE_val_final.index(min(SSE_val_final))]
     print("The best final weight based upon validation SSE is" +str(w_best))
-    sorted_idx = np.flip(np.argsort(np.abs(w_best)))
+    sorted_idx = np.argsort(-np.abs(w_best))
     print("The values of w sorted by magnitude")
     for idx in sorted_idx:
         print("  "+train.keys[idx]+": "+str(w_best[idx]))
