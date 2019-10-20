@@ -154,7 +154,7 @@ if 1 in args.parts:
     w_best = final_w_for_alpha[best_idx]
     print("The best final weight based upon validation SSE is" +str(w_best))
     sorted_idx = np.argsort(-np.abs(w_best))
-    print("The values of w sorted by magnitude")
+    print("The values of w sorted by magnitude:")
     for idx in sorted_idx:
         print("  "+train.keys[idx]+": "+str(w_best[idx]))
     
@@ -219,6 +219,12 @@ if 2 in args.parts:
         plt.ylabel("gradient norm")
         plt.show()
         """
+
+        if lambda_0 in [0,10**(-2),10]:
+            sorted_idx = np.argsort(-np.abs(w_vecs[-1]))
+            print("The values of w for lamba = "+str(lambda_0)+" sorted by magnitude:")
+            for idx in sorted_idx:
+                print("  "+train.keys[idx]+": "+str(w_vecs[-1][idx]))
 
         # create list of final sum of squared errors
         SSE_val_final.append(SSE_val[-1])
