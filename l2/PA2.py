@@ -11,8 +11,61 @@ def loadzip(zipname, csvname):
     df[df.shape[1]] = [1.]*len(df)
     return df
 
+def online_perceptron_loop(df, iters):
+    X = np.array(df.values[:,1:])
+    y = np.array(df[0].values)
+    w = np.zeros(X.shape[1])
+    w_list = []
+    n = X.shape[0]
+    for i in range(iters):
+        w_list.append(w)
+        for idx in range(n):
+            if np.dot(X[idx],w)*y[idx] <= 0:
+                w = w + X[idx]*y[idx]
+    w_list.append(w)
+    return w_list
+
+def avg_perceptron_loop(df, iters):
+    X = np.array(df.values[:,1:])
+    y = np.array(df[0].values)
+    n = X.shape[0]
+    w = np.array([0]*X.shape[1])
+    w_ = np.array([0]*X.shape[1])
+    s = 0
+    w_list = []
+    for i in range(iters):
+        w_list.append(w_)
+        for idx in range(n):
+            s0 = s.copy()
+            s += 1
+            if np.dot(X[idx],w)*y[idx] <= 0:
+                w = w + X[idx]*y[idx]
+            w_ = (1/s)*((s0*w_) + w)
+    w_list.append(w_)
+    return w_list
+
+def kernel_perceptron_loop(df, iters, p):
+    X = np.array(df.values[:,1:])
+    y = np.array(df[0].values)
+    n = X.shape[0]
+    a = np.zeros(n)
+    K = (1+np.matmul(X,X.T))**p
+    a_list = []
+    for i in range(iters):
+        a_list.append(a)
+        for idx in range(iters):
+            u = sum(a[idx]*K[idx]*y[idx])
+            if u*y[idx] <= 0:
+                a[idx] += 1
+    a_list.append(a)
+    return a_list
+
+
+
+
+
 def online_perceptron(df,iters):
-    # this is broken as it needs to update w t every step not atthe end
+    # this is broken as it needs to update w every step not atthe end
     X = np.array(df.values[:,1:])
     y = np.array(df[0].values)
     w = np.zeros(X.shape[1])
@@ -25,7 +78,7 @@ def online_perceptron(df,iters):
     return w_list
 
 def avg_perceptron(df,iters):
-    # This is incorect. Noit sure How to apply vectorization correctly.
+    # This is incorect. Not sure How to apply vectorization correctly.
     X = np.array(df.values[:,1:])
     y = np.array(df[0].values)
     n = X.shape[0]
@@ -55,7 +108,8 @@ def kernel_perceptron(df,iters, p):
     for i in range(iters):
         a_list.append(a)
         u = np.dot(a,(K*y))
-        a = a + u[u <= 0]
+        u1 = u*y
+        a = a + (u1 <= 0)
     a_list.append(a)
     return a_list
 
