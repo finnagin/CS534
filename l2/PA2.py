@@ -18,11 +18,11 @@ def online_perceptron_loop(df, iters):
     w_list = []
     n = X.shape[0]
     for i in range(iters):
-        w_list.append(w)
+        w_list.append(w.copy())
         for idx in range(n):
             if np.dot(X[idx],w)*y[idx] <= 0:
                 w = w + X[idx]*y[idx]
-    w_list.append(w)
+    w_list.append(w.copy())
     return w_list
 
 def avg_perceptron_loop(df, iters):
@@ -34,14 +34,14 @@ def avg_perceptron_loop(df, iters):
     s = 0
     w_list = []
     for i in range(iters):
-        w_list.append(w_)
+        w_list.append(w_.copy())
         for idx in range(n):
             s0 = s.copy()
             s += 1
             if np.dot(X[idx],w)*y[idx] <= 0:
                 w = w + X[idx]*y[idx]
             w_ = (1/s)*((s0*w_) + w)
-    w_list.append(w_)
+    w_list.append(w_.copy())
     return w_list
 
 def kernel_perceptron_loop(df, iters, p):
@@ -52,12 +52,12 @@ def kernel_perceptron_loop(df, iters, p):
     K = (1+np.matmul(X,X.T))**p
     a_list = []
     for i in range(iters):
-        a_list.append(a)
+        a_list.append(a.copy())
         for idx in range(iters):
             u = sum(a[idx]*K[idx]*y[idx])
             if u*y[idx] <= 0:
                 a[idx] += 1
-    a_list.append(a)
+    a_list.append(a.copy())
     return a_list
 
 
@@ -69,10 +69,10 @@ def online_perceptron(df,iters):
     w = np.zeros(X.shape[1])
     w_list = []
     for i in range(iters):
-        w_list.append(w)
+        w_list.append(w.copy())
         A = y*np.dot(X,w)
         w = w + sum((np.tile(y,(X.shape[1],1)).T*X)[A <= 0])
-    w_list.append(w)
+    w_list.append(w.copy())
     return w_list
 
 def avg_perceptron(df,iters):
@@ -86,7 +86,7 @@ def avg_perceptron(df,iters):
     w_list = []
     for i in range(iters):
         s0 = s.copy()
-        w_list.append(w)
+        w_list.append(w.copy())
         A = y*np.dot(X,w)
         update_vals = (np.tile(y,(X.shape[1],1)).T*X)
         w = w + sum(update_vals[A <= 0])
@@ -94,7 +94,7 @@ def avg_perceptron(df,iters):
         s2 = s + n - s
         if s > 0:
             w_ = (1/s)*(s0*w_ + w)
-    w_list.append(w)
+    w_list.append(w.copy())
     return w_list
 
 def kernel_perceptron(df,iters, p):
@@ -104,11 +104,11 @@ def kernel_perceptron(df,iters, p):
     K = (1+np.matmul(X,X.T))**p
     a_list = []
     for i in range(iters):
-        a_list.append(a)
+        a_list.append(a.copy())
         u = np.dot(a,(K*y))
         u1 = u*y
         a = a + (u1 <= 0)
-    a_list.append(a)
+    a_list.append(a.copy())
     return a_list
 
 
