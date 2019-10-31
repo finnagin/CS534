@@ -62,8 +62,6 @@ def kernel_perceptron_loop(df, iters, p):
 
 
 
-
-
 def online_perceptron(df,iters):
     # this is broken as it needs to update w every step not atthe end
     X = np.array(df.values[:,1:])
@@ -114,7 +112,12 @@ def kernel_perceptron(df,iters, p):
     return a_list
 
 
-
-df = loadzip('data/pa2_train.csv.zip')
+if __name__ == "__main__":
+    df = loadzip('data/pa2_train.csv.zip','pa2_train.csv')
+    w1 = kernel_perceptron(df,3,2)
+    w2 = kernel_perceptron_loop(df,3,2)
+    print(w1)
+    print(w2)
+    print(w1 == w2)
 
 
