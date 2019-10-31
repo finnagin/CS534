@@ -12,9 +12,10 @@ def loadzip(zipname, csvname):
     return df
 
 def online_perceptron(df,iters):
+    # this is broken as it needs to update w t every step not atthe end
     X = np.array(df.values[:,1:])
     y = np.array(df[0].values)
-    w = np.array([0]*X.shape[1])
+    w = np.zeros(X.shape[1])
     w_list = []
     for i in range(iters):
         w_list.append(w)
@@ -24,22 +25,39 @@ def online_perceptron(df,iters):
     return w_list
 
 def avg_perceptron(df,iters):
-    # still need to tinker with this
+    # This is incorect. Noit sure How to apply vectorization correctly.
     X = np.array(df.values[:,1:])
     y = np.array(df[0].values)
+    n = X.shape[0]
     w = np.array([0]*X.shape[1])
     w_ = np.array([0]*X.shape[1])
+    s = 0
     w_list = []
     for i in range(iters):
+        s0 = s.copy()
         w_list.append(w)
         A = y*np.dot(X,w)
         update_vals = (np.tile(y,(X.shape[1],1)).T*X)
         w = w + sum(update_vals[A <= 0])
+        s1 = s + update_vals[A <= 0].shape[0]
+        s2 = s + n - s
+        if s > 0:
+            w_ = (1/s)*(s0*w_ + w)
     w_list.append(w)
     return w_list
 
-def kernel_perceptron(df,iters):
-    pass
+def kernel_perceptron(df,iters, p):
+    X = np.array(df.values[:,1:])
+    y = np.array(df[0].values)
+    a = np.zeros(X.shape[0])
+    K = (1+np.matmul(X,X.T))**p
+    a_list = []
+    for i in range(iters):
+        a_list.append(a)
+        u = np.dot(a,(K*y))
+        a = a + u[u <= 0]
+    a_list.append(a)
+    return a_list
 
 
 
