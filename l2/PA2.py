@@ -127,7 +127,7 @@ if __name__ == "__main__":
     if True:
         df = loadzip('data/pa2_train.csv.zip','pa2_train.csv')
         df_val = loadzip('data/pa2_valid.csv.zip','pa2_valid.csv')
-        df_test = loadzip('data/pa2_test_no_label.csv.zip','pa2_test_no_label.csv')
+        df_test = loadzip('data/pa2_test_no_label.csv.zip','pa2_test_no_label.csv',True)
         X = np.array(df.values[:,1:])
         y = np.array(df[0].values)
         n = X.shape[0]
@@ -155,7 +155,7 @@ if __name__ == "__main__":
             val1.append(tmp_val)
         best_iter = val1.index(min(val1))
         with open("oplabel.csv","w") as fid:
-            pred1 = -2*((X_test[idx]*w1s[best_iter] <= 0) - .5)
+            pred1 = np.sign(np.dot(X_test,w1s[best_iter]))
             for idx in range(n_test):
                 fid.write(str(pred1[idx]))
         if not args.hide:
@@ -184,7 +184,7 @@ if __name__ == "__main__":
             val2.append(tmp_val)
         best_iter = val2.index(min(val2))
         with open("aplabel.csv","w") as fid:
-            pred2 = -2*((X_test[idx]*w2s[best_iter] <= 0) - .5)
+            pred2 = np.sign(np.dot(X_test,w2s[best_iter]))
             for idx in range(n_test):
                 fid.write(str(pred2[idx]))
         if not args.hide:
