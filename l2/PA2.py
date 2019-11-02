@@ -155,9 +155,9 @@ if __name__ == "__main__":
             val1.append(tmp_val)
         best_iter = val1.index(min(val1))
         with open("oplabel.csv","w") as fid:
-            pred2 = -2*((X_test[idx]*w1s[best_iter] <= 0) - .5)
+            pred1 = -2*((X_test[idx]*w1s[best_iter] <= 0) - .5)
             for idx in range(n_test):
-                fid.write(str(preds[idx]))
+                fid.write(str(pred1[idx]))
         if not args.hide:
             plt.figure()
             plt.plot(range(len(w2s)),[1-x/float(n) for x in train1],color="#ff7f00", label="Train")
@@ -186,7 +186,7 @@ if __name__ == "__main__":
         with open("aplabel.csv","w") as fid:
             pred2 = -2*((X_test[idx]*w2s[best_iter] <= 0) - .5)
             for idx in range(n_test):
-                fid.write(str(preds[idx]))
+                fid.write(str(pred2[idx]))
         if not args.hide:
             plt.figure()
             plt.plot(range(len(w2s)),[1-x/float(n) for x in train2],color="#ff7f00", label="Train")
