@@ -128,20 +128,15 @@ if __name__ == "__main__":
     w2s = avg_perceptron_loop(df, iters)
     all_a = []
     Ks = []
-    for p in [1,2,3,4,5]:
-        K = (1+np.matmul(X_val,X.T))**p
-        K_vals.append(K)
-        K = (1+np.matmul(X,X.T))**p
-        Ks.append(K)
-        all_a.append(kernel_perceptron_loop(df,p,iters))
+    
 
     
 
     train = []
     val = []
     for w in w1s:
-        train.append(sum(np.dot(np.dot(X,w),y) <= 0)/len(y))
-        val.append(sum(np.dot(np.dot(X_val,w),y_val) <= 0)/len(y_val))
+        train.append(sum(np.dot(X,w)*y <= 0)/len(y))
+        val.append(sum(np.dot(X_val,w)*y_val <= 0)/len(y_val))
     plt.figure()
     plt.plot(range(len(w1s)),train,color="#ff7f00")
     plt.plot(range(len(w1s)),val,color="#984ea3")
@@ -150,13 +145,20 @@ if __name__ == "__main__":
     train = []
     val = []
     for w in w2s:
-        train.append(sum(np.dot(np.dot(X,w),y) <= 0)/len(y))
-        val.append(sum(np.dot(np.dot(X_val,w),y_val) <= 0)/len(y_val))
+        train.append(sum(np.dot(X,w)*y <= 0)/len(y))
+        val.append(sum(np.dot(X_val,w)*y_val <= 0)/len(y_val))
     plt.figure()
     plt.plot(range(len(w2s)),train,color="#ff7f00")
     plt.plot(range(len(w2s)),val,color="#984ea3")
     plt.show()
 
+
+    for p in [1,2,3,4,5]:
+        K = (1+np.matmul(X_val,X.T))**p
+        K_vals.append(K)
+        K = (1+np.matmul(X,X.T))**p
+        Ks.append(K)
+        all_a.append(kernel_perceptron_loop(df,p,iters))
     trains = []
     vals = []
     for idx in range(len(all_a)):
