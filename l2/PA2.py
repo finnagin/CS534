@@ -116,7 +116,7 @@ def kernel_perceptron(df,iters, p):
 if __name__ == "__main__":
     df = loadzip('data/pa2_train.csv.zip','pa2_train.csv')
     df_val = loadzip('data/pa2_valid.csv.zip','pa2_valid.csv')
-    df_test = loadzip('data/pa2_test.csv.zip','pa2_test.csv')
+    df_test = loadzip('data/pa2_test_no_label.csv.zip','pa2_test_no_label.csv')
     K_vals = []
     iters = 15
     w1s = online_perceptron_loop(df, iters)
