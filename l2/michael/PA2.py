@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 """
 Created on Fri Nov  1 13:57:27 2019
 
 @author: Michael
 """
 
-args = "1"
+args = "0 1 2 3"
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,6 +24,7 @@ if "0" in args:
     X_train = np.ones((Y_train.size,1))
     
     X_train = np.append(X_train, data_train[:,1:], axis=1)
+    
 
     data_val = np.loadtxt('pa2_valid.csv', delimiter=',')
 
@@ -68,10 +68,10 @@ if "1" in args:
     for W_index in range(len(weight_list)):
        
         train_prediction = np.sign(np.dot(X_train, weight_list[W_index]))
-        train_errors = np.count_nonzero(train_prediction - Y_train)                                     
+        train_errors = 100*np.count_nonzero(train_prediction - Y_train)/Y_train.size                                     
         
         val_prediction = np.sign(np.dot(X_val,weight_list[W_index]))
-        val_errors = np.count_nonzero(val_prediction-Y_val)
+        val_errors = 100*np.count_nonzero(val_prediction-Y_val)/Y_val.size
                                                    
         train_errors_per_iteration.append(train_errors)
         val_errors_per_iteration.append(val_errors)
@@ -80,7 +80,7 @@ if "1" in args:
     plt.plot(range(len(weight_list)),train_errors_per_iteration, label='training error')
     plt.plot(range(len(weight_list)), val_errors_per_iteration, label='validaiton error')
     plt.title('Perceptron Algorithm')
-    plt.ylabel('number of errors')
+    plt.ylabel('percentage errors')
     plt.xlabel('iterations')
     plt.legend()
     plt.show()
@@ -89,7 +89,7 @@ if "1" in args:
     
     best_weight = weight_list[best_weight_index]
     
-    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
+    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error percentage: " + str(val_errors_per_iteration[best_weight_index]))
     test_prediction = np.sign(np.dot(X_test, best_weight))
     
     np.savetxt('oplabel.csv',test_prediction, delimiter = ',')
@@ -111,10 +111,10 @@ if "2" in args:
         
         
         train_prediction = np.sign(np.dot(X_train, weight_list[W_index]))
-        train_errors = np.count_nonzero(train_prediction - Y_train)                                     
+        train_errors = 100*np.count_nonzero(train_prediction - Y_train)/Y_train.size                                     
         
         val_prediction = np.sign(np.dot(X_val,weight_list[W_index]))
-        val_errors = np.count_nonzero(val_prediction-Y_val)
+        val_errors = 100*np.count_nonzero(val_prediction-Y_val)/Y_val.size
                                                    
         train_errors_per_iteration.append(train_errors)
         val_errors_per_iteration.append(val_errors)
@@ -124,7 +124,7 @@ if "2" in args:
     plt.plot(range(len(weight_list)),train_errors_per_iteration, label='training error')
     plt.plot(range(len(weight_list)), val_errors_per_iteration, label='validaiton error')
     plt.title('Average Perceptron Algorithm')
-    plt.ylabel('number of errors')
+    plt.ylabel('percentage errors')
     plt.xlabel('iterations')
     plt.legend()
     plt.show()
@@ -132,7 +132,7 @@ if "2" in args:
     
     best_weight = weight_list[best_weight_index]
     
-    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
+    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation erro percentage: " + str(val_errors_per_iteration[best_weight_index]))
     test_prediction = np.sign(np.dot(X_test, best_weight))
     
     np.savetxt('aplabel.csv',test_prediction, delimiter = ',')
@@ -158,10 +158,10 @@ if "3" in args:
         for W_index in range(len(weight_list)):
     
             train_prediction = KernelizedPerceptronPrediction(weight_list[W_index], X_train, Y_train, X_train, p)      
-            train_errors = np.count_nonzero(train_prediction - Y_train)
+            train_errors = 100*np.count_nonzero(train_prediction - Y_train)/Y_train.size
        
             val_prediction = KernelizedPerceptronPrediction(weight_list[W_index], X_val, Y_train, X_train, p)      
-            val_errors = np.count_nonzero(val_prediction - Y_val)
+            val_errors = 100*np.count_nonzero(val_prediction - Y_val)/Y_val.size
        
             train_errors_per_iteration.append(train_errors)
             val_errors_per_iteration.append(val_errors)
@@ -169,8 +169,8 @@ if "3" in args:
         plt.figure()
         plt.plot(range(len(train_errors_per_iteration)),train_errors_per_iteration, label='training error')
         plt.plot(range(len(val_errors_per_iteration)), val_errors_per_iteration, label='validaiton error')
-        plt.title('Kernel Perceptron Algorithm, p: ' + str(p))
-        plt.ylabel('number of errors')
+        plt.title('Kernel Perceptron Algorithm, p = ' + str(p))
+        plt.ylabel('percentage errors')
         plt.xlabel('iterations')
         plt.legend()
         plt.show()
@@ -182,12 +182,12 @@ if "3" in args:
         best_weight = weight_list[best_weight_index]
         best_weight_list.append(best_weight)
     
-        print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
+        print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error percentage: " + str(val_errors_per_iteration[best_weight_index]))
         
         
     plt.plot([1,2,3,4,5],best_error_list)
-    plt.title("p vs validation error")
-    plt.ylabel("validation errors")
+    plt.title("p vs validation error percentage")
+    plt.ylabel("validation errors percentage")
     plt.xlabel('p')
     
     p_val_best = best_error_list.index(min(best_error_list)) + 1 # because indexing starts at 0
@@ -199,7 +199,6 @@ if "3" in args:
     test_prediction = KernelizedPerceptronPrediction(best_weight,X_test, Y_train, X_train, p_val_best) 
     np.savetxt('kplabel.csv',test_prediction, delimiter = ',')
 
-        
         
         
         
