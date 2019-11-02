@@ -251,6 +251,7 @@ if __name__ == "__main__":
         preds = predictK(all_a[best_p][best_iter], K_test, y, X_test)
         for acc in [1-x/float(n_val) for x in min_errs]:
             print("Best Validation Accuracy for p="+str(p)+": "+str(acc*100)+"%")
+            p+=1
         with open("kplabel.csv","w") as fid:
             for idx in range(n_test):
                 fid.write(str(preds[idx]))
