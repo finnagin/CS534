@@ -117,6 +117,11 @@ if __name__ == "__main__":
     df = loadzip('data/pa2_train.csv.zip','pa2_train.csv')
     df_val = loadzip('data/pa2_valid.csv.zip','pa2_valid.csv')
     df_test = loadzip('data/pa2_test_no_label.csv.zip','pa2_test_no_label.csv')
+    X = np.array(df.values[:,1:])
+    y = np.array(df[0].values)
+    X_val = np.array(df_val.values[:,1:])
+    y_val = np.array(df_val[0].values)
+    X_test = np.array(df_val.values)
     K_vals = []
     iters = 15
     w1s = online_perceptron_loop(df, iters)
@@ -130,11 +135,7 @@ if __name__ == "__main__":
         Ks.append(K)
         all_a.append(kernel_perceptron_loop(df,p,iters))
 
-    X = np.array(df.values[:,1:])
-    y = np.array(df[0].values)
-    X_val = np.array(df_val.values[:,1:])
-    y_val = np.array(df_val[0].values)
-    X_test = np.array(df_val.values)
+    
 
     train = []
     val = []
