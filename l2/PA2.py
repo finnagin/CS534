@@ -160,8 +160,8 @@ if __name__ == "__main__":
                 fid.write(str(pred1[idx]))
         if not args.hide:
             plt.figure()
-            plt.plot(range(len(w2s)),[1-x/float(n) for x in train1],color="#ff7f00", label="Train")
-            plt.plot(range(len(w2s)),[1-x/float(n_val) for x in val1],color="#984ea3", label="Validation")
+            plt.plot(range(len(w1s)),[1-x/float(n) for x in train1],color="#ff7f00", label="Train")
+            plt.plot(range(len(w1s)),[1-x/float(n_val) for x in val1],color="#984ea3", label="Validation")
             plt.title("Online Perceptron")
             plt.xlabel("Iterations")
             plt.ylabel("Accuracy")
