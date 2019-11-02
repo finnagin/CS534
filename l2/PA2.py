@@ -139,7 +139,7 @@ if __name__ == "__main__":
 
     train = []
     val = []
-    for idx in range(len(w1s)):
+    for w in w1s:
         train.append(sum(np.dot(np.dot(X,w),y) <= 0)/len(y))
         val.append(sum(np.dot(np.dot(X_val,w),y_val) <= 0)/len(y_val))
     plt.figure()
@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
     train = []
     val = []
-    for idx in range(len(w2s)):
+    for w in w2s:
         train.append(sum(np.dot(np.dot(X,w),y) <= 0)/len(y))
         val.append(sum(np.dot(np.dot(X_val,w),y_val) <= 0)/len(y_val))
     plt.figure()
