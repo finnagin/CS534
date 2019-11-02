@@ -168,7 +168,7 @@ if __name__ == "__main__":
             plt.legend()
             plt.show()
 
-    if if 2 in args.parts:
+    if 2 in args.parts:
         print("Starting part 2...")
         w2s = avg_perceptron_loop(df, iters)
         train2 = []
