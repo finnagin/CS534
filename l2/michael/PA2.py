@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Fri Nov  1 13:57:27 2019
 
 @author: Michael
 """
 
-args = "3"
+args = "1"
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -189,13 +190,19 @@ if "3" in args:
     plt.ylabel("validation errors")
     plt.xlabel('p')
     
-    p_val_min = best_error_list.index(min(best_error_list))
+    p_val_best = best_error_list.index(min(best_error_list)) + 1 # because indexing starts at 0
     
-    best_weight = best_weight_list(p_val_min)
+    print("The best p value is p = "+ str(p_val_best))
     
-    test_prediction = KernelizedPerceptronPrediction(best_weight,X_test, Y_train, X_train, p_val_min) 
-    np.savetxt('aplabel.csv',test_prediction, delimiter = ',')
+    best_weight = best_weight_list[best_error_list.index(min(best_error_list))]
+    
+    test_prediction = KernelizedPerceptronPrediction(best_weight,X_test, Y_train, X_train, p_val_best) 
+    np.savetxt('kplabel.csv',test_prediction, delimiter = ',')
 
+        
+        
+        
+        
         
        
 
