@@ -85,10 +85,10 @@ if "1" in args:
         val_errors_per_iteration.append(val_errors)
             
     
-    plt.plot(range(len(weight_list)),train_errors_per_iteration, label='training error')
-    plt.plot(range(len(weight_list)), val_errors_per_iteration, label='validaiton error')
+    plt.plot(range(len(weight_list)),100-np.array(train_errors_per_iteration), label='training accuracy')
+    plt.plot(range(len(weight_list)),100-np.array(val_errors_per_iteration), label='validaiton accuracy')
     plt.title('Perceptron Algorithm')
-    plt.ylabel('percentage errors')
+    plt.ylabel('accuracy')
     plt.xlabel('iterations')
     plt.legend()
     plt.show()
@@ -97,7 +97,7 @@ if "1" in args:
     
     best_weight = weight_list[best_weight_index]
     
-    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error percentage: " + str(val_errors_per_iteration[best_weight_index]))
+    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation accuracy %" + str(100-val_errors_per_iteration[best_weight_index]))
     test_prediction = np.sign(np.dot(X_test, best_weight))
     
     np.savetxt('oplabel.csv',test_prediction, delimiter = ',')
@@ -129,10 +129,10 @@ if "2" in args:
 
     
     plt.figure()
-    plt.plot(range(len(weight_list)),train_errors_per_iteration, label='training error')
-    plt.plot(range(len(weight_list)), val_errors_per_iteration, label='validaiton error')
+    plt.plot(range(len(weight_list)),100-np.array(train_errors_per_iteration), label='training accuracy')
+    plt.plot(range(len(weight_list)), 100-np.array(val_errors_per_iteration), label='validaiton accuracy')
     plt.title('Average Perceptron Algorithm')
-    plt.ylabel('percentage errors')
+    plt.ylabel('accuracy')
     plt.xlabel('iterations')
     plt.legend()
     plt.show()
@@ -140,7 +140,7 @@ if "2" in args:
     
     best_weight = weight_list[best_weight_index]
     
-    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation erro percentage: " + str(val_errors_per_iteration[best_weight_index]))
+    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation accuracy %" + str(100-val_errors_per_iteration[best_weight_index]))
     test_prediction = np.sign(np.dot(X_test, best_weight))
     
     np.savetxt('aplabel.csv',test_prediction, delimiter = ',')
@@ -175,10 +175,10 @@ if "3" in args:
             val_errors_per_iteration.append(val_errors)
        
         plt.figure()
-        plt.plot(range(len(train_errors_per_iteration)),train_errors_per_iteration, label='training error')
-        plt.plot(range(len(val_errors_per_iteration)), val_errors_per_iteration, label='validaiton error')
+        plt.plot(range(len(train_errors_per_iteration)),100-np.array(train_errors_per_iteration), label='training accuracy')
+        plt.plot(range(len(val_errors_per_iteration)), 100-np.array(val_errors_per_iteration), label='validaiton accuracy')
         plt.title('Kernel Perceptron Algorithm, p = ' + str(p))
-        plt.ylabel('percentage errors')
+        plt.ylabel('accuracy')
         plt.xlabel('iterations')
         plt.legend()
         plt.show()
@@ -190,12 +190,12 @@ if "3" in args:
         best_weight = weight_list[best_weight_index]
         best_weight_list.append(best_weight)
     
-        print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error percentage: " + str(val_errors_per_iteration[best_weight_index]))
+        print("The best weight is at iteration: "+ str(best_weight_index) + " with validation accuracy %" + str(100-val_errors_per_iteration[best_weight_index]))
         
         
-    plt.plot([1,2,3,4,5],best_error_list)
-    plt.title("p vs validation error percentage")
-    plt.ylabel("validation error percentage")
+    plt.plot([1,2,3,4,5],100 - np.array(best_error_list))
+    plt.title("p vs accuracy")
+    plt.ylabel("accuracy")
     plt.xlabel('p')
     
     p_val_best = best_error_list.index(min(best_error_list)) + 1 # because indexing starts at 0
