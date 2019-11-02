@@ -83,7 +83,6 @@ def KernelizedPerceptronPrediction(weight, X_input, Y_train, X_train, p):
     predictions = np.sign(np.dot(np.transpose(K),weight*Y_train))
     
     return predictions
-    
             
 
     
