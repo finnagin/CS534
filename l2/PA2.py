@@ -62,6 +62,22 @@ def kernel_perceptron_loop(df, iters, p):
     a_list.append(a.copy())
     return a_list
 
+def KernelizedPerceptron(Y_train, X_train, p, iters):
+    (num_of_examples, feature_number) = X_train.shape
+    a = np.zeros(num_of_examples)
+    weight_list = []
+    weight_list.append(np.copy(a))
+    K = np.power(1 + np.matmul(X_train, np.transpose(X_train)),p)
+    iter = 0
+    while iter < iters:
+        for t in range(num_of_examples):
+            u = np.dot(a, np.transpose(K[:,t])*Y_train)
+            if Y_train[t]*u <= 0:
+                a[t] += 1
+        weight_list.append(np.copy(a))
+        iter += 1
+    return weight_list
+
 def predictK(a, K, y, X_test):
     preds = np.sign(np.dot(K,a*y))
     return preds
@@ -207,7 +223,8 @@ if __name__ == "__main__":
             K_vals.append(K)
             K = (1+np.matmul(X,X.T))**p
             Ks.append(K)
-            all_a.append(kernel_perceptron_loop(df,iters,p))
+            all_a.append(KernelizedPerceptron(y, X, p, iters))
+            #all_a.append(kernel_perceptron_loop(df,iters,p))
 
     if 3 in args.parts:
         trains = []
@@ -238,8 +255,8 @@ if __name__ == "__main__":
         if not args.hide:
             for train, val in zip(trains, vals):
                 plt.figure()
-                plt.plot(range(len(w2s)),[1-x/float(n) for x in train],color="#ff7f00", label="Train")
-                plt.plot(range(len(w2s)),[1-x/float(n_val) for x in val],color="#984ea3", label="Validation")
+                plt.plot(range(len(train)),[1-x/float(n) for x in train],color="#ff7f00", label="Train")
+                plt.plot(range(len(val)),[1-x/float(n_val) for x in val],color="#984ea3", label="Validation")
                 plt.legend()
                 plt.title("Kernel Perceptron with p="+str(p))
                 plt.xlabel("Iterations")
