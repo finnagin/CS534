@@ -194,7 +194,7 @@ if "3" in args:
         
         
     plt.plot([1,2,3,4,5],100 - np.array(best_error_list))
-    plt.title("p vs accuracy")
+    plt.title("p vs validation accuracy")
     plt.ylabel("accuracy")
     plt.xlabel('p')
     
@@ -210,5 +210,9 @@ if "3" in args:
         
         
         
+        
+        
+
+    
 
        
