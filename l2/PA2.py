@@ -46,7 +46,7 @@ def avg_perceptron_loop(df, iters):
     w_list.append(w_.copy())
     return w_list
 
-def kernel_perceptron_loop(df, iters, p)
+def kernel_perceptron_loop(df, iters, p):
     y = np.array(df[0].values)
     n = X.shape[0]
     a = np.zeros(n)
