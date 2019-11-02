@@ -5,7 +5,7 @@ Created on Fri Nov  1 13:57:27 2019
 @author: Michael
 """
 
-args = "1"
+args = "0 1 2"
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,19 +15,32 @@ from Perceptron_Algorithms import *
 
 # Part 0 data loading
 
-if "0" in args:
+if "0 1" in args:
 
     data_train = np.loadtxt('pa2_train.csv', delimiter=',')
 
+
     Y_train = data_train[:,0]
-    X_train = data_train[:,1:]
+    X_train = np.ones((Y_train.size,1))
+    
+    X_train = np.append(X_train, data_train[:,1:], axis=1)
 
     data_val = np.loadtxt('pa2_valid.csv', delimiter=',')
 
     Y_val = data_val[:,0]
-    X_val = data_val[:,1:]
+    X_val = np.ones((Y_val.size,1))
+    
+    X_val = np.append(X_val, data_val[:,1:], axis=1)
 
-    X_test = np.loadtxt('pa2_test_no_label.csv',delimiter=',')
+    
+    data_test = np.loadtxt('pa2_test_no_label.csv',delimiter=',')
+      
+    (test_num, feature_num) = np.shape(data_test)
+    
+    X_test = np.zeros((test_num, 1))
+    
+    X_test = np.append(X_test, data_test, axis=1)
+    
 
 
 #image = np.reshape(X_train[0,:], (28,28))
@@ -41,7 +54,7 @@ if "0" in args:
     np.place(Y_val, Y_val == 3, 1)
     np.place(Y_val, Y_val == 5, -1)
 
-    (num_of_examples, feature_number) = X_train.shape
+    #(num_of_examples, feature_number) = X_train.shape
 
     iters = 15
  
@@ -75,6 +88,16 @@ if "1" in args:
     plt.ylabel('number of errors')
     plt.xlabel('iterations')
     plt.legend()
+    plt.show()
+    
+    best_weight_index = np.argmin(val_errors_per_iteration)
+    
+    best_weight = weight_list[best_weight_index]
+    
+    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
+    test_prediction = np.sign(np.dot(X_test, best_weight))
+    
+    np.savetxt('oplabel.csv',test_prediction, delimiter = ',')
        
 
 # %%
@@ -100,15 +123,7 @@ if "2" in args:
                                                    
         train_errors_per_iteration.append(train_errors)
         val_errors_per_iteration.append(val_errors)
-        
-        
-        
-       
-#        train_error = Y_train*np.dot(X_train, weight_list[W_index])     
-#        train_errors_per_iteration.append(np.count_nonzero((train_error <=0)))
-#       
-#        val_error = Y_val*np.dot(X_val,weight_list[W_index])     
-#        val_errors_per_iteration.append(np.count_nonzero((val_error <=0)))
+
     
     plt.figure()
     plt.plot(range(len(weight_list)),train_errors_per_iteration, label='training error')
@@ -117,6 +132,15 @@ if "2" in args:
     plt.ylabel('number of errors')
     plt.xlabel('iterations')
     plt.legend()
+    plt.show()
+    best_weight_index = np.argmin(val_errors_per_iteration)
+    
+    best_weight = weight_list[best_weight_index]
+    
+    print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
+    test_prediction = np.sign(np.dot(X_test, best_weight))
+    
+    np.savetxt('oplabel.csv',test_prediction, delimiter = ',')
 
      
 # %%
@@ -152,6 +176,8 @@ if "3" in args:
         plt.ylabel('number of errors')
         plt.xlabel('iterations')
         plt.legend()
+        
+        
 
     
        
