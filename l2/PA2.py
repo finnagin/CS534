@@ -199,6 +199,7 @@ if __name__ == "__main__":
                 tmp_val += int(np.dot(X_val[idx],w)*y_val[idx] <= 0)
             val2.append(tmp_val)
         best_iter = val2.index(min(val2))
+        #print("Best Validation Accuracy is with " + str(best_iter) + "iterations: " + val2[])
         with open("aplabel.csv","w") as fid:
             pred2 = np.sign(np.dot(X_test,w2s[best_iter]))
             for idx in range(n_test):
@@ -233,7 +234,6 @@ if __name__ == "__main__":
             train=[]
             val=[]
             for idx in range(len(all_a[p])):
-                print("a"+str(idx))
                 preds = predictK(all_a[p][idx], Ks[p], y, X)
                 train.append(sum(preds*y<=0))
                 preds = predictK(all_a[p][idx], K_vals[p], y, X_val)
@@ -249,10 +249,13 @@ if __name__ == "__main__":
         best_iter = best_iters[best_p]
         K_test = (1+np.matmul(X_test,X.T))**(best_p+1)
         preds = predictK(all_a[best_p][best_iter], K_test, y, X_test)
+        for acc in [1-x/float(n_val) for x in min_errs]:
+            print("Best Validation Accuracy for p="+str(p)+": "+str(acc*100)+"%")
         with open("kplabel.csv","w") as fid:
             for idx in range(n_test):
                 fid.write(str(preds[idx]))
         if not args.hide:
+            p=1
             for train, val in zip(trains, vals):
                 plt.figure()
                 plt.plot(range(len(train)),[1-x/float(n) for x in train],color="#ff7f00", label="Train")
