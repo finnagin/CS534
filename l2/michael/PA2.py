@@ -5,7 +5,7 @@ Created on Fri Nov  1 13:57:27 2019
 @author: Michael
 """
 
-args = "0 1 2"
+args = "3"
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,7 +15,7 @@ from Perceptron_Algorithms import *
 
 # Part 0 data loading
 
-if "0 1" in args:
+if "0" in args:
 
     data_train = np.loadtxt('pa2_train.csv', delimiter=',')
 
@@ -43,18 +43,12 @@ if "0 1" in args:
     
 
 
-#image = np.reshape(X_train[0,:], (28,28))
-
-#plt.imshow(image)
-
-
     np.place(Y_train, Y_train == 3, 1)
     np.place(Y_train, Y_train == 5, -1)
     
     np.place(Y_val, Y_val == 3, 1)
     np.place(Y_val, Y_val == 5, -1)
 
-    #(num_of_examples, feature_number) = X_train.shape
 
     iters = 15
  
@@ -140,7 +134,7 @@ if "2" in args:
     print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
     test_prediction = np.sign(np.dot(X_test, best_weight))
     
-    np.savetxt('oplabel.csv',test_prediction, delimiter = ',')
+    np.savetxt('aplabel.csv',test_prediction, delimiter = ',')
 
      
 # %%
@@ -149,6 +143,8 @@ if "2" in args:
 
 if "3" in args:
     
+    best_weight_list = []
+    best_error_list = []
     
     for p in [1,2,3,4,5]:
         
@@ -176,10 +172,31 @@ if "3" in args:
         plt.ylabel('number of errors')
         plt.xlabel('iterations')
         plt.legend()
+        plt.show()
         
         
-
+        best_weight_index = np.argmin(val_errors_per_iteration)
+        best_error_list.append(val_errors_per_iteration[best_weight_index])
     
+        best_weight = weight_list[best_weight_index]
+        best_weight_list.append(best_weight)
+    
+        print("The best weight is at iteration: "+ str(best_weight_index) + " with validation error: " + str(val_errors_per_iteration[best_weight_index]))
+        
+        
+    plt.plot([1,2,3,4,5],best_error_list)
+    plt.title("p vs validation error")
+    plt.ylabel("validation errors")
+    plt.xlabel('p')
+    
+    p_val_min = best_error_list.index(min(best_error_list))
+    
+    best_weight = best_weight_list(p_val_min)
+    
+    test_prediction = KernelizedPerceptronPrediction(best_weight,X_test, Y_train, X_train, p_val_min) 
+    np.savetxt('aplabel.csv',test_prediction, delimiter = ',')
+
+        
        
 
 
