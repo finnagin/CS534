@@ -38,7 +38,7 @@ def avg_perceptron_loop(df, iters):
     for i in range(iters):
         w_list.append(w_.copy())
         for idx in range(n):
-            s0 = s.copy()
+            s0 = s
             s += 1
             if np.dot(X[idx],w)*y[idx] <= 0:
                 w = w + X[idx]*y[idx]
