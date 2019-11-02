@@ -266,7 +266,7 @@ if __name__ == "__main__":
             plt.figure()
             plt.plot([1,2,3,4,5],[1-x/float(n_val) for x in min_errs],color="#984ea3")
             plt.title("Best Validation Accuracy for P Values")
-            plt.xtics([1,2,3,4,5],[1,2,3,4,5])
+            plt.xticks([1,2,3,4,5],[1,2,3,4,5])
             plt.xlabel("P")
             plt.ylabel("Accuracy")
             plt.show()
