@@ -187,7 +187,7 @@ if "3" in args:
         
     plt.plot([1,2,3,4,5],best_error_list)
     plt.title("p vs validation error percentage")
-    plt.ylabel("validation errors percentage")
+    plt.ylabel("validation error percentage")
     plt.xlabel('p')
     
     p_val_best = best_error_list.index(min(best_error_list)) + 1 # because indexing starts at 0
@@ -199,6 +199,8 @@ if "3" in args:
     test_prediction = KernelizedPerceptronPrediction(best_weight,X_test, Y_train, X_train, p_val_best) 
     np.savetxt('kplabel.csv',test_prediction, delimiter = ',')
 
+        
+        
         
         
         
