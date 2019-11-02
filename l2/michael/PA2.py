@@ -5,11 +5,19 @@ Created on Fri Nov  1 13:57:27 2019
 @author: Michael
 """
 
-args = "0 1 2 3"
 
 import numpy as np
 import matplotlib.pyplot as plt
 from Perceptron_Algorithms import *
+
+import sys
+
+if(len(sys.argv) == 1):
+
+    args = "0123"
+    
+else:
+    args = sys.argv[1]
 
 # %%
 
@@ -199,7 +207,6 @@ if "3" in args:
     test_prediction = KernelizedPerceptronPrediction(best_weight,X_test, Y_train, X_train, p_val_best) 
     np.savetxt('kplabel.csv',test_prediction, delimiter = ',')
 
-        
         
         
         
