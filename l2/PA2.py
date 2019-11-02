@@ -160,8 +160,11 @@ if 1 in args.parts:
             fid.write(str(preds[idx]))
     if not args.hide:
         plt.figure()
-        plt.plot(range(len(w2s)),[x/float(n) for x in train1],color="#ff7f00", label="Train")
-        plt.plot(range(len(w2s)),[x/float(n_val) for x in val1],color="#984ea3", label="Validation")
+        plt.plot(range(len(w2s)),[1-x/float(n) for x in train1],color="#ff7f00", label="Train")
+        plt.plot(range(len(w2s)),[1-x/float(n_val) for x in val1],color="#984ea3", label="Validation")
+        plt.title("Online Perceptron")
+        plt.xlabel("Iterations")
+        plt.ylabel("Accuracy")
         plt.legend()
         plt.show()
 
@@ -186,8 +189,11 @@ if if 2 in args.parts:
             fid.write(str(preds[idx]))
     if not args.hide:
         plt.figure()
-        plt.plot(range(len(w2s)),[x/float(n) for x in train2],color="#ff7f00", label="Train")
-        plt.plot(range(len(w2s)),[x/float(n_val) for x in val2],color="#984ea3", label="Validation")
+        plt.plot(range(len(w2s)),[1-x/float(n) for x in train2],color="#ff7f00", label="Train")
+        plt.plot(range(len(w2s)),[1-x/float(n_val) for x in val2],color="#984ea3", label="Validation")
+        plt.title("Average Perceptron")
+        plt.xlabel("Iterations")
+        plt.ylabel("Accuracy")
         plt.legend()
         plt.show()
 
@@ -235,7 +241,9 @@ if 3 in args.parts:
             plt.plot(range(len(w2s)),[1-x/float(n) for x in train],color="#ff7f00", label="Train")
             plt.plot(range(len(w2s)),[1-x/float(n_val) for x in val],color="#984ea3", label="Validation")
             plt.legend()
-            plt.title("p="+str(p))
+            plt.title("Kernel Perceptron with p="+str(p))
+            plt.xlabel("Iterations")
+            plt.ylabel("Accuracy")
             plt.show()
             p+=1
 
