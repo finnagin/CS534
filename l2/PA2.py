@@ -17,7 +17,7 @@ if __name__ == "__main__":
     df = loadzip('data/pa2_train.csv.zip','pa2_train.csv')
     df_val = loadzip('data/pa2_valid.csv.zip','pa2_valid.csv')
     df_test = loadzip('data/pa2_test_no_label.csv.zip','pa2_test_no_label.csv',True)
-    
+
     # Extract the values from the dataframe
     X = np.array(df.values[:,1:])
     y = np.array(df[0].values)
