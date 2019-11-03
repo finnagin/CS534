@@ -49,7 +49,7 @@ if __name__ == "__main__":
             val1.append(tmp_val)
         # get the best iteration from validation data
         best_iter = val1.index(min(val1))
-        print("Best Validation Accuracy was with " + str(best_iter) + "iterations: " + str(min(val1)))
+        print("Best Validation Accuracy was with " + str(best_iter) + " iterations: " + str(min(val1)))
         # predict test values
         with open("oplabel.csv","w") as fid:
             pred1 = np.sign(np.dot(X_test,w1s[best_iter]))
@@ -84,7 +84,7 @@ if __name__ == "__main__":
                 tmp_val += int(np.dot(X_val[idx],w)*y_val[idx] <= 0)
             val2.append(tmp_val)
         best_iter = val2.index(min(val2))
-        print("Best Validation Accuracy was with " + str(best_iter) + "iterations: " + str(min(val2)))
+        print("Best Validation Accuracy was with " + str(best_iter) + " iterations: " + str(min(val2)))
         # predict test values
         with open("aplabel.csv","w") as fid:
             pred2 = np.sign(np.dot(X_test,w2s[best_iter]))
@@ -153,7 +153,7 @@ if __name__ == "__main__":
         for acc in [1-x/float(n_val) for x in min_errs]:
             print("Best Validation Accuracy for p="+str(p)+" is: "+str(acc*100)+"%")
             p+=1
-        print("The best value for P is "+str(best_p))
+        print("The best value for P is "+str(best_p+1))
         if not args.hide:
             p=1
             # plot for each p
