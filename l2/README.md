@@ -17,7 +17,7 @@ Use python 2.7 with pandas, nupy and matplotlib
   ```
   will run parts 1 and 3 without displaying the plots.
 4) After running it should output results to the terminal and display the plots to screen.
-5) After running the prediction files `oplabels.csv`, `aplabels.csv`, and `kplabels.csv` will be in the root directory if parts 1, 2, or 3 were run respectively
+5) After running the prediction files `oplabel.csv`, `aplabel.csv`, and `kplabel.csv` will be in the root directory if parts 1, 2, or 3 were run respectively
 
 
 The data loading fuctions and the perceptron algorithms are located in the `Perceptron_Algorithms.py` file.
