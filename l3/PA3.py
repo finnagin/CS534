@@ -111,8 +111,20 @@ class tree():
                     node = node.left
                 else:
                     node = node.right
-            preds[idx] = math.floor(float(sum(self.y.ix[node.index]))/len(self.y.ix[node.index]) + .5)
+            preds[idx] = self.y.ix[node.index].mode[0]
         return preds
+
+    def print_nodes(self, node, p_string):
+        if node.feature is None:
+            print(p_string)
+            print(self.y.ix[node.index].value_counts())
+        else:
+            self.print_nodes(node.left, p_string + "(" + node.feature + "=" + str(node.value) + ")")
+            self.print_nodes(node.right, p_string + "(" + node.feature + "!=" + str(node.value) + ")")
+
+    def print_tree(self):
+        self.print_nodes(self.root, '')
+        
 
 
 
