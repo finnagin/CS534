@@ -18,7 +18,7 @@ def loadzip(zipname, csvname):
     df = pd.read_csv(reader.open(csvname))
     return df
 
-class node():
+class make_node():
     def __init__(self, index, feature_dict):
         self.left = None
         self.right = None
@@ -28,7 +28,7 @@ class node():
         self.feature = None
 
 
-class tree():
+class make_tree():
     def __init__(self, df, max_depth, n_features = 0):
         self.y = df['class']
         self.df = df
@@ -38,9 +38,9 @@ class tree():
         for key in df:
             if len(df[key].unique())>1 and key != "class":
                 root_dict[key] = list(df[key].unique())
-        self.root = node(list(df.index),root_dict)
+        self.root = make_node(list(df.index),root_dict)
         root_depth = 0
-        self.queue = [(self.root, cur_depth)]
+        self.queue = [(self.root, root_depth)]
         while len(self.queue) > 0:
             self.split_node(*self.queue.pop(0))
         del self.df
@@ -49,8 +49,12 @@ class tree():
         cur_depth = depth + 1
         df_subset = self.df.ix[node.index]
         df_len = len(df_subset)
+        if df_len == 0:
+            print(node.index)
+            print(depth)
+            return
         cur_gini = float(sum(df_subset['class']))/df_len
-        cur_gini = 1-(cur_gini)^2-(1-cur_gini)^2
+        cur_gini = 1-(cur_gini)**2-(1-cur_gini)**2
         max_gain = 0
         max_feature = None
         max_val = None
@@ -66,45 +70,50 @@ class tree():
                     value = node.feature_dict[feature][0]
                     l_subset = df_subset['class'][df_subset[feature] == value]
                     r_subset = df_subset['class'][df_subset[feature] != value]
-                    gini_l = float(sum(l_subset))/len(l_subset)
-                    gini_l = 1-gini_l^2-(1-gini_l)^2
-                    gini_r = float(sum(r_subset))/len(r_subset)
-                    gini_r = 1-gini_r^2-(1-gini_r)^2
-                    gain = cur_gini - (float(len(l_subset))/df_len)*gini_l - (float(len(r_subset))/df_len)*gini_r
-                    if gain > max_gain:
-                        max_gain = gain
-                        max_feature = feature
-                        max_val = value
-                else:
-                    for value in node.feature_dict[feature]:
-                        l_subset = df_subset['class'][df_subset[feature] == value]
-                        r_subset = df_subset['class'][df_subset[feature] != value]
+                    if len(l_subset) != 0 and len(r_subset) != 0:
                         gini_l = float(sum(l_subset))/len(l_subset)
-                        gini_l = 1-gini_l^2-(1-gini_l)^2
+                        gini_l = 1-gini_l**2-(1-gini_l)**2
                         gini_r = float(sum(r_subset))/len(r_subset)
-                        gini_r = 1-gini_r^2-(1-gini_r)^2
+                        gini_r = 1-gini_r**2-(1-gini_r)**2
                         gain = cur_gini - (float(len(l_subset))/df_len)*gini_l - (float(len(r_subset))/df_len)*gini_r
                         if gain > max_gain:
                             max_gain = gain
                             max_feature = feature
                             max_val = value
+                else:
+                    for value in node.feature_dict[feature]:
+                        l_subset = df_subset['class'][df_subset[feature] == value]
+                        r_subset = df_subset['class'][df_subset[feature] != value]
+                        if len(l_subset) != 0 and len(r_subset) != 0:
+                            gini_l = float(sum(l_subset))/len(l_subset)
+                            gini_l = 1-gini_l**2-(1-gini_l)**2
+                            gini_r = float(sum(r_subset))/len(r_subset)
+                            gini_r = 1-gini_r**2-(1-gini_r)**2
+                            gain = cur_gini - (float(len(l_subset))/df_len)*gini_l - (float(len(r_subset))/df_len)*gini_r
+                            if gain > max_gain:
+                                max_gain = gain
+                                max_feature = feature
+                                max_val = value
             if max_feature is not None:
+                #print("max_gain:"+str(max_gain))
                 node.feature = max_feature
                 node.value = max_val
                 new_dict = node.feature_dict.copy()
                 new_dict[max_feature].remove(max_val)
                 if len(new_dict[max_feature]) < 2:
                     del new_dict[max_feature]
-                l_index = list(df_subset[df_subset[feature] == value].index)
-                r_index = list(df_subset[df_subset[feature] != value].index)
-                node.left = node(l_index,new_dict)
-                node.right = node(r_index,new_dict)
+                l_index = list(df_subset[df_subset[max_feature] == max_val].index)
+                r_index = list(df_subset[df_subset[max_feature] != max_val].index)
+                #print("l_index:"+str(len(l_index)))
+                #print("r_index:"+str(len(r_index)))
+                node.left = make_node(l_index,new_dict)
+                node.right = make_node(r_index,new_dict)
                 self.queue.append((node.left,cur_depth))
                 self.queue.append((node.right,cur_depth))
 
     def predict(self, df):
         preds = [None]*len(df)
-        for idx in range(len(df))
+        for idx in range(len(df)):
             node = self.root
             while node.feature is not None:
                 if df[node.feature][idx] == node.value:
@@ -150,3 +159,4 @@ if __name__ == "__main__":
     df = loadzip('data/pa3_train.zip','pa3_train.csv')
     df_val = loadzip('data/pa3_val.zip','pa3_val.csv')
     df_test = loadzip('data/pa3_test.zip','pa3_test.csv')
+    t1 = tree(df,1)
