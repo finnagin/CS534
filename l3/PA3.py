@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import argparse
 import math
 import time
+from collections import Counter
 
 
 def loadzip(zipname, csvname):
@@ -47,7 +48,7 @@ class make_tree():
 
     def split_node(self, node, depth):
         cur_depth = depth + 1
-        df_subset = self.df.ix[node.index]
+        df_subset = self.df.iloc[node.index]
         df_len = len(df_subset)
         if df_len == 0:
             print(node.index)
@@ -62,7 +63,12 @@ class make_tree():
             return
         else:
             if self.n_features > 0:
-                features = np.choice(list(node.feature_dict.keys()), self.n_features, replace=False)
+                if len(node.feature_dict.keys()) < self.n_features:
+                    n_feat = len(node.feature_dict.keys())
+                else:
+                    n_feat = self.n_features
+                features = np.random.choice(list(node.feature_dict.keys()), n_feat, replace=False)
+                #print(features)
             else:
                 features = list(node.feature_dict.keys())
             for feature in features:
@@ -120,16 +126,16 @@ class make_tree():
                     node = node.left
                 else:
                     node = node.right
-            preds[idx] = self.y.ix[node.index].mode[0]
+            preds[idx] = self.y.iloc[node.index].mode()[0]
         return preds
 
     def print_nodes(self, node, p_string):
         if node.feature is None:
             print(p_string)
-            print(self.y.ix[node.index].value_counts())
+            print(self.y.iloc[node.index].value_counts())
         else:
-            self.print_nodes(node.left, p_string + "(" + node.feature + "=" + str(node.value) + ")")
-            self.print_nodes(node.right, p_string + "(" + node.feature + "!=" + str(node.value) + ")")
+            self.print_nodes(node.left, p_string + "(" + node.feature + "=" + str(node.value) + ")->")
+            self.print_nodes(node.right, p_string + "(" + node.feature + "!=" + str(node.value) + ")->")
 
     def print_tree(self):
         self.print_nodes(self.root, '')
@@ -139,9 +145,23 @@ class make_tree():
 
 
 
-class forrest():
+class make_forest():
     def __init__(self, df, max_depth, features, trees):
-        pass
+        self.trees = [None]*trees
+        self.n = trees
+        for idx in range(trees):
+            boot_df = df.sample(len(df), replace=True).reset_index(drop=True)
+            self.trees[idx] = make_tree(boot_df, max_depth, features)
+
+    def predict(self,df):
+        preds = [None]*self.n
+        n = float(self.n)
+        for idx in range(self.n):
+            preds[idx] = self.trees[idx].predict(df)
+        voted_preds = [Counter(x).most_common()[0][0] for x in zip(*preds)]
+        return voted_preds
+
+
 
 
 
