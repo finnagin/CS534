@@ -30,7 +30,7 @@ class make_node():
 
 
 class make_tree():
-    def __init__(self, df, max_depth, n_features = 0):
+    def __init__(self, df, max_depth, n_features = 0, alphas = None):
         self.y = df['class']
         self.df = df
         self.n_features = n_features
@@ -41,12 +41,12 @@ class make_tree():
                 root_dict[key] = list(df[key].unique())
         self.root = make_node(list(df.index),root_dict)
         root_depth = 0
-        self.queue = [(self.root, root_depth)]
+        self.queue = [(self.root, root_depth, alphas)]
         while len(self.queue) > 0:
             self.split_node(*self.queue.pop(0))
         del self.df
 
-    def split_node(self, node, depth):
+    def split_node(self, node, depth, alphas = None):
         cur_depth = depth + 1
         df_subset = self.df.iloc[node.index]
         df_len = len(df_subset)
@@ -54,7 +54,12 @@ class make_tree():
             print(node.index)
             print(depth)
             return
-        cur_gini = float(sum(df_subset['class']))/df_len
+        if alphas is None:
+            cur_gini = float(sum(df_subset['class']))/df_len
+        else:
+            pos_alpha = sum(alphas[df_subset[df_subset['class'] == 1].index])
+            all_alpha = sum(alphas[node.index])
+            cur_gini = float(pos_alpha)/all_alpha
         cur_gini = 1-(cur_gini)**2-(1-cur_gini)**2
         max_gain = 0
         max_feature = None
@@ -77,9 +82,17 @@ class make_tree():
                     l_subset = df_subset['class'][df_subset[feature] == value]
                     r_subset = df_subset['class'][df_subset[feature] != value]
                     if len(l_subset) != 0 and len(r_subset) != 0:
-                        gini_l = float(sum(l_subset))/len(l_subset)
+                        if alphas is None:
+                            gini_l = float(sum(l_subset))/len(l_subset)
+                            gini_r = float(sum(r_subset))/len(r_subset)
+                        else:
+                            pos_l = sum(alphas[l_subset[l_subset['class'] == 1].index])
+                            all_l = sum(alphas[l_subset.index])
+                            gini_l = float(pos_l)/all_l
+                            pos_r = sum(alphas[r_subset[r_subset['class'] == 1].index])
+                            all_r = sum(alphas[r_subset.index])
+                            gini_r = float(pos_r)/all_r 
                         gini_l = 1-gini_l**2-(1-gini_l)**2
-                        gini_r = float(sum(r_subset))/len(r_subset)
                         gini_r = 1-gini_r**2-(1-gini_r)**2
                         gain = cur_gini - (float(len(l_subset))/df_len)*gini_l - (float(len(r_subset))/df_len)*gini_r
                         if gain > max_gain:
@@ -91,9 +104,17 @@ class make_tree():
                         l_subset = df_subset['class'][df_subset[feature] == value]
                         r_subset = df_subset['class'][df_subset[feature] != value]
                         if len(l_subset) != 0 and len(r_subset) != 0:
-                            gini_l = float(sum(l_subset))/len(l_subset)
+                            if alphas is None:
+                                gini_l = float(sum(l_subset))/len(l_subset)
+                                gini_r = float(sum(r_subset))/len(r_subset)
+                            else:
+                                pos_l = sum(alphas[l_subset[l_subset['class'] == 1].index])
+                                all_l = sum(alphas[l_subset.index])
+                                gini_l = float(pos_l)/all_l
+                                pos_r = sum(alphas[r_subset[r_subset['class'] == 1].index])
+                                all_r = sum(alphas[r_subset.index])
+                                gini_r = float(pos_r)/all_r
                             gini_l = 1-gini_l**2-(1-gini_l)**2
-                            gini_r = float(sum(r_subset))/len(r_subset)
                             gini_r = 1-gini_r**2-(1-gini_r)**2
                             gain = cur_gini - (float(len(l_subset))/df_len)*gini_l - (float(len(r_subset))/df_len)*gini_r
                             if gain > max_gain:
@@ -114,8 +135,8 @@ class make_tree():
                 #print("r_index:"+str(len(r_index)))
                 node.left = make_node(l_index,new_dict)
                 node.right = make_node(r_index,new_dict)
-                self.queue.append((node.left,cur_depth))
-                self.queue.append((node.right,cur_depth))
+                self.queue.append((node.left,cur_depth,alphas))
+                self.queue.append((node.right,cur_depth,alphas))
 
     def predict(self, df):
         preds = [None]*len(df)
@@ -161,8 +182,9 @@ class make_forest():
         voted_preds = [Counter(x).most_common()[0][0] for x in zip(*preds)]
         return voted_preds
 
-
-
+class ada_boost():
+    def __init__(self, df, iter):
+        pass
 
 
 if __name__ == "__main__":
@@ -179,4 +201,27 @@ if __name__ == "__main__":
     df = loadzip('data/pa3_train.zip','pa3_train.csv')
     df_val = loadzip('data/pa3_val.zip','pa3_val.csv')
     df_test = loadzip('data/pa3_test.zip','pa3_test.csv')
-    t1 = tree(df,1)
+    
+    if 1 in args.parts:
+        trees = [None]*8
+        pred = [None]*8
+        pred_val = [None]*8
+        train_err = [None]*8
+        val_err = [None]*8
+        for idx in range(8):
+            trees[idx] = tree(df,idx + 1)
+            pred[idx] = trees[idx].predict(df)
+            pred_val[idx] = trees[idx].predict(df_val)
+            train_err[idx] = float(sum(df['class'] == pred[idx]))/len(pred[idx])
+            val_err[idx] = float(sum(df_val['class'] == pred_val[idx]))/len(pred_val[idx])
+            print("The training error for a tree with " + str(idx+1) + " depth is: " + str(train_err[idx]))
+            print("The Validation error for a tree with " + str(idx+1) + " depth is: " + str(val_err[idx]))
+        if not args.hide:
+            pass
+            #plot code goes here
+
+    if 2 in args.parts:
+        pass
+
+    if 3 in args.parts:
+
