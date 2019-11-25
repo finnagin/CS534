@@ -57,8 +57,8 @@ class make_tree():
         if alphas is None:
             cur_gini = float(sum(df_subset['class']))/df_len
         else:
-            pos_alpha = sum(alphas[df_subset[df_subset['class'] == 1].index])
-            all_alpha = sum(alphas[node.index])
+            pos_alpha = sum([alphas[a] for a in df_subset[df_subset['class'] == 1].index])
+            all_alpha = sum([alphas[a] for a in node.index])
             cur_gini = float(pos_alpha)/all_alpha
         cur_gini = 1-(cur_gini)**2-(1-cur_gini)**2
         max_gain = 0
@@ -86,11 +86,11 @@ class make_tree():
                             gini_l = float(sum(l_subset))/len(l_subset)
                             gini_r = float(sum(r_subset))/len(r_subset)
                         else:
-                            pos_l = sum(alphas[l_subset[l_subset['class'] == 1].index])
-                            all_l = sum(alphas[l_subset.index])
+                            pos_l = sum([alphas[a] for a in l_subset[l_subset == 1].index])
+                            all_l = sum([alphas[a] for a in l_subset.index])
                             gini_l = float(pos_l)/all_l
-                            pos_r = sum(alphas[r_subset[r_subset['class'] == 1].index])
-                            all_r = sum(alphas[r_subset.index])
+                            pos_r = sum([alphas[a] for a in r_subset[r_subset == 1].index])
+                            all_r = sum([alphas[a] for a in r_subset.index])
                             gini_r = float(pos_r)/all_r 
                         gini_l = 1-gini_l**2-(1-gini_l)**2
                         gini_r = 1-gini_r**2-(1-gini_r)**2
@@ -108,11 +108,11 @@ class make_tree():
                                 gini_l = float(sum(l_subset))/len(l_subset)
                                 gini_r = float(sum(r_subset))/len(r_subset)
                             else:
-                                pos_l = sum(alphas[l_subset[l_subset['class'] == 1].index])
-                                all_l = sum(alphas[l_subset.index])
+                                pos_l = sum([alphas[a] for a in l_subset[l_subset == 1].index])
+                                all_l = sum([alphas[a] for a in l_subset.index])
                                 gini_l = float(pos_l)/all_l
-                                pos_r = sum(alphas[r_subset[r_subset['class'] == 1].index])
-                                all_r = sum(alphas[r_subset.index])
+                                pos_r = sum([alphas[a] for a in r_subset[r_subset == 1].index])
+                                all_r = sum([alphas[a] for a in r_subset.index])
                                 gini_r = float(pos_r)/all_r
                             gini_l = 1-gini_l**2-(1-gini_l)**2
                             gini_r = 1-gini_r**2-(1-gini_r)**2
@@ -183,8 +183,35 @@ class make_forest():
         return voted_preds
 
 class ada_boost():
-    def __init__(self, df, iter):
-        pass
+    def __init__(self, df, n_models, max_depth):
+        self.df = df
+        self.n = n_models
+        self.models = [None]*n_models
+        self.weights = [None]*n_models
+        alphas = [1]*len(df)
+        for idx in range(n_models):
+            self.models[idx] = make_tree(df, max_depth, 0, alphas)
+            pred = self.models[idx].predict(df)
+            pos_alpha = float(sum([alphas[a] for a in df[df['class'] == pred].index]))
+            all_alpha = sum(alphas)
+            weighted_err = 1-(pos_alpha/all_alpha)
+            update_alpha = (1./2)*math.log((1-weighted_err)/weighted_err)
+            for i in range(len(df)):
+                if pred[i] == df['class'][i]:
+                    alphas[i] = alphas[i]*(math.e**-update_alpha)
+                else:
+                    alphas[i] = alphas[i]*(math.e**update_alpha)
+            self.weights[idx] = update_alpha
+
+    def predict(self, df):
+        preds = [None]*self.n
+        total_weights = sum(self.weights)
+        for idx in range(self.n):
+            preds[idx] = self.models[idx].predict(df)
+        voted_preds = [math.floor(float(np.dot(x,self.weights))/total_weights+.5) for x in zip(*preds)]
+        return voted_preds
+
+
 
 
 if __name__ == "__main__":
@@ -209,19 +236,27 @@ if __name__ == "__main__":
         train_err = [None]*8
         val_err = [None]*8
         for idx in range(8):
-            trees[idx] = tree(df,idx + 1)
+            trees[idx] = make_tree(df,idx + 1)
             pred[idx] = trees[idx].predict(df)
             pred_val[idx] = trees[idx].predict(df_val)
-            train_err[idx] = float(sum(df['class'] == pred[idx]))/len(pred[idx])
-            val_err[idx] = float(sum(df_val['class'] == pred_val[idx]))/len(pred_val[idx])
-            print("The training error for a tree with " + str(idx+1) + " depth is: " + str(train_err[idx]))
-            print("The Validation error for a tree with " + str(idx+1) + " depth is: " + str(val_err[idx]))
+            train_err[idx] = 1-float(sum(df['class'] == pred[idx]))/len(pred[idx])
+            val_err[idx] = 1-float(sum(df_val['class'] == pred_val[idx]))/len(pred_val[idx])
+            if idx == 1:
+                print("The training error for a tree with " + str(idx+1) + " depth is: " + str(train_err[idx]))
+                print("The validation error for a tree with " + str(idx+1) + " depth is: " + str(val_err[idx]))
         if not args.hide:
-            pass
-            #plot code goes here
+            plt.figure()
+            plt.plot(range(8),train_err,color="#ff7f00", label="Train")
+            plt.plot(range(8),val_err,color="#984ea3", label="Validation")
+            plt.title("Decision Trees")
+            plt.xlabel("Depth")
+            plt.ylabel("Accuracy")
+            plt.legend()
+            plt.show()
 
     if 2 in args.parts:
         pass
 
     if 3 in args.parts:
+        pass
 
