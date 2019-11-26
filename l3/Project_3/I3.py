@@ -60,17 +60,47 @@ val_data_shape = val_data.shape
 
 if "1" in args:
     
-    print()
-    print("Decision tree for depth in [0,1,2,3,4,5,6,7,8]")
-    print()
-
-    training_accuracy = []
-    val_accuracy = []
     
     weights = np.ones(training_data_shape[0])
 
+    print("Decision tree for depth: 2")
+
+    root_node = DTN.Decision_Tree_Node(feature_dictionary, training_data, 2, 0, weights, None)
+        
+    Correct_Count = 0;
+
+    for index in range(training_data_shape[0]):
+            
+        if root_node.make_prediction(training_data[index,:],False) == training_data[index,training_data_shape[1]-1]:
+                
+            Correct_Count = Correct_Count + 1
+
     
-    for max_depth in range(9):
+    training_accuracy = (Correct_Count/training_data_shape[0])
+
+    print("Training data accuracy for depth " + str(2) + " is: " + str(training_accuracy))
+    
+
+    Correct_Count = 0;
+   
+    for index in range(val_data_shape[0]):
+            
+        if root_node.make_prediction(val_data[index,:],False) == val_data[index,val_data_shape[1]-1]:
+                
+            Correct_Count = Correct_Count + 1
+    
+    val_accuracy = Correct_Count/val_data_shape[0]
+
+    print("Validation data accuracy for depth " + str(2) + " is: " + str(val_accuracy))
+
+    training_accuracy = []
+    val_accuracy = []
+
+    print()
+    print("Decision tree for depth in [1,2,3,4,5,6,7,8]")
+    print()
+    
+    for max_depth in range(1,9):
 
         root_node = DTN.Decision_Tree_Node(feature_dictionary, training_data, max_depth, 0, weights, None)
         
@@ -85,7 +115,7 @@ if "1" in args:
     
         training_accuracy.append(Correct_Count/training_data_shape[0])
 
-        print("Training data accuracy for depth " + str(max_depth) + " is: " + str(training_accuracy[max_depth]))
+        print("Training data accuracy for depth " + str(max_depth) + " is: " + str(training_accuracy[-1]))
     
     
         
@@ -99,11 +129,11 @@ if "1" in args:
     
         val_accuracy.append(Correct_Count/val_data_shape[0])
 
-        print("Validation data accuracy for depth " + str(max_depth) + " is: " + str(val_accuracy[max_depth]))
+        print("Validation data accuracy for depth " + str(max_depth) + " is: " + str(val_accuracy[-1]))
         
         
         
-    plt.plot(np.linspace(0, 8, 9), training_accuracy,'rs-', np.linspace(0,8,9), val_accuracy, 'b^-')
+    plt.plot(list(range(1,9)), training_accuracy,'rs-', list(range(1,9)), val_accuracy, 'b^-')
     plt.legend(("Training", "Validation"))
     plt.ylabel("accuracy")
     plt.xlabel("tree depth")
@@ -302,7 +332,7 @@ if "3" in args:
     L_values = [1,2,5,10,15]
     
     print()
-    print("Looping over L values: " + str(L_values))
+    print("With d: 1, Looping over L values: " + str(L_values))
     print()
     
     for L in L_values:
@@ -412,7 +442,7 @@ if "3" in args:
     print()
     print("Writing prediction file: pa3_prediction for samples from pa3_test.csv using L: " + str(best_L) + " and d: " + str(best_d))
     
-    with open("pa3_prediction.csv", 'w') as test_output:
+    with open("pa3_prediction.csv", 'w', newline='') as test_output:
         output_writer = csv.writer(test_output, delimiter=',')
         
         for index in range(test_data_shape[0]):
