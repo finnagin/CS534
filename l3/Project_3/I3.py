@@ -7,7 +7,7 @@ Created on Fri Nov 22 18:00:58 2019
 
 import numpy as np
 import matplotlib.pyplot as plt
-import argparse
+import sys
 import csv
 import Decision_Tree_Module as DTN
 import Random_Forest_Module as RFM
@@ -15,7 +15,10 @@ import Ada_Boosted_Decision_Tree_Module as ABDTM
 
 # load CSV file and create feature dictionary.
 
-args = "3"
+if len(sys.argv) == 1:
+    args = "123"
+else:
+       args = sys.argv[1]
 
 with open("pa3_train.csv", 'r') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
@@ -33,6 +36,15 @@ with open("pa3_val.csv", 'r') as csvfile:
     val_data_list = list(csvreader)   
     val_data = np.array(val_data_list).astype(float)
     
+
+with open("pa3_test.csv", 'r') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    header = next(csvreader)
+    
+    test_data_list = list(csvreader)   
+    test_data = np.array(test_data_list).astype(float)
+    
+
 
 
 
@@ -249,7 +261,7 @@ if "2" in args:
                 
         training_accuracy.append(Correct_Count/training_data_shape[0])
 
-        print("Training data accuracy for trial: " + str(t) + " is: " + str(training_accuracy[-1]))
+        print("Training data accuracy for trial: " + str(t+1) + " is: " + str(training_accuracy[-1]))
         
     
         Correct_Count = 0
@@ -261,7 +273,7 @@ if "2" in args:
                 
         val_accuracy.append(Correct_Count/val_data_shape[0])
 
-        print("Validation data accuracy for trial: " + str(t) + " is: " + str(val_accuracy[-1]))
+        print("Validation data accuracy for trial: " + str(t+1) + " is: " + str(val_accuracy[-1]))
     
 #    plt.plot(np.linspace(1,max_trials,max_trials), training_accuracy,'rs', np.linspace(1,max_trials,max_trials), val_accuracy, 'b^')
 #    plt.legend(("Training", "Validation"))
@@ -286,8 +298,6 @@ if "3" in args:
     training_accuracy = []
     val_accuracy = []
     
-    
-    Boosted_Learner_List = [] 
 
     L_values = [1,2,5,10,15]
     
@@ -327,10 +337,93 @@ if "3" in args:
     plt.ylabel("accuracy")
     plt.xlabel("L")
     plt.show()
+    
+    max_depth = 2
+    L = 6
             
-            
+    Boosted_Learner = ABDTM.Ada_Boosted_Decision_Tree(feature_dictionary, training_data, max_depth, L)
         
-                
+    Correct_Count = 0
+        
+    for index in range(training_data_shape[0]):
+            
+        if Boosted_Learner.make_prediction(training_data[index,:], False) == training_data[index, training_data_shape[1]-1]:
+            Correct_Count = Correct_Count + 1
+            
+    training_accuracy_d2_l6 = Correct_Count/training_data_shape[0]
+            
+    print("Training data accuracy for L: " + str(L) + " and d: " + str(max_depth) + " is: " + str(training_accuracy_d2_l6))
+            
+    Correct_Count = 0
+        
+    for index in range(val_data_shape[0]):
+             
+        if Boosted_Learner.make_prediction(val_data[index,:],False) == val_data[index, val_data_shape[1]-1]:
+            Correct_Count = Correct_Count + 1
+            
+    val_accuracy_d2_l6 = Correct_Count/val_data_shape[0]
+        
+    print("Validation data accuracy for L: " + str(L) + " and d: " + str(max_depth)+ " is: " + str(val_accuracy_d2_l6))
+            
+    
+    
+    max_depth = 1
+    L = 15
+            
+    Boosted_Learner = ABDTM.Ada_Boosted_Decision_Tree(feature_dictionary, training_data, max_depth, L)
+        
+    Correct_Count = 0
+        
+    for index in range(training_data_shape[0]):
+            
+        if Boosted_Learner.make_prediction(training_data[index,:], False) == training_data[index, training_data_shape[1]-1]:
+            Correct_Count = Correct_Count + 1
+            
+    training_accuracy_d1_l15 = Correct_Count/training_data_shape[0]
+            
+    print("Training data accuracy for L: " + str(L) + " and d: " + str(max_depth) + " is: " + str(training_accuracy_d1_l15))
+            
+    Correct_Count = 0
+        
+    for index in range(val_data_shape[0]):
+             
+        if Boosted_Learner.make_prediction(val_data[index,:],False) == val_data[index, val_data_shape[1]-1]:
+            Correct_Count = Correct_Count + 1
+            
+    val_accuracy_d1_l15 = Correct_Count/val_data_shape[0]
+        
+    print("Validation data accuracy for L: " + str(L) + " and d: " + str(max_depth)+ " is: " + str(val_accuracy_d1_l15))
+            
+    
+    if max(val_accuracy) >= val_accuracy_d2_l6:
+        
+        best_L = L_values[val_accuracy.index(max(val_accuracy))]
+        best_d = 1
+    else:
+        best_L = 6
+        best_d = 2
+        
+    print("The best L value given is: " + str(best_L) +" the best d value given is: " + str(best_d))
+    
+    Boosted_Learner = ABDTM.Ada_Boosted_Decision_Tree(feature_dictionary, training_data, best_d, best_L)
+    
+    test_data_shape = test_data.shape
+    
+    print()
+    print("Writing prediction file: pa3_prediction for samples from pa3_test.csv using L: " + str(best_L) + " and d: " + str(best_d))
+    
+    with open("pa3_prediction.csv", 'w') as test_output:
+        output_writer = csv.writer(test_output, delimiter=',')
+        
+        for index in range(test_data_shape[0]):
+            prediction = Boosted_Learner.make_prediction(test_data[index,:], False)
+            output_writer.writerow(str(prediction))
+        
+    
+    
+    
+        
+    
         
     
     

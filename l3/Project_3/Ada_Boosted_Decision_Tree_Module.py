@@ -55,9 +55,7 @@ class Ada_Boosted_Decision_Tree:
                     
             # normalize next weights to 1.
             
-            normalization_term = np.sum(self.D_list[l+1])
-            
-            self.D_list[l+1] = np.copy(self.D_list[l+1])/normalization_term
+            self.D_list[l+1] = np.copy(self.D_list[l+1])/np.sum(self.D_list[l+1])
             
     
                     
@@ -66,10 +64,19 @@ class Ada_Boosted_Decision_Tree:
         
         weighted_weak_learner_predictions = []
         
+        
         for l in range(self.L):
-            weighted_weak_learner_predictions.append(self.h_list[l].make_prediction(sample, False)*self.alpha_list[l])
             
-        if(sum(weighted_weak_learner_predictions) >= .5):
+            prediction = self.h_list[l].make_prediction(sample, print_error)
+            
+            if prediction == 0:
+                prediction = -1
+            else:
+                prediction = 1
+            
+            weighted_weak_learner_predictions.append(prediction*self.alpha_list[l])
+            
+        if(sum(weighted_weak_learner_predictions) >= 0):
             return 1
         else:
             return 0
