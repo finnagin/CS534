@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import csv
-import Decision_Tree_Node as DTN
+import Decision_Tree_Module as DTN
 import Random_Forest_Module as RFM
 import Ada_Boosted_Decision_Tree_Module as ABDTM
 
